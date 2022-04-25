@@ -22,6 +22,13 @@ app_ui <- function(request) {
         shiny::fluidPage(
           mod_load_files_ui("load_files_1")
         )
+      ),
+      shiny::navbarMenu("Graphics",
+        shiny::tabPanel("Boxplot",
+          shiny::fluidPage(
+            mod_boxplot_ui("boxplot_1")
+          )
+        )
       )
     )
   )
