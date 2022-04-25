@@ -9,6 +9,21 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
+    shiny::navbarPage(
+      title = div(
+        img(src = "www/pampa.GIF",
+          height = "45px",
+          style = "position: relative; margin:-15px 0px;"),
+        "PAMPA 0.1",
+
+      ),
+#      title = img(src = "test.png"),
+      shiny::tabPanel("Load Data",
+        shiny::fluidPage(
+          mod_load_files_ui("load_files_1")
+        )
+      )
+    )
   )
 }
 
