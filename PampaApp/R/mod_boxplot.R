@@ -90,6 +90,17 @@ mod_boxplot_server <- function(id, load_file){
       }
     })
 
+    params <- reactiveValues(
+      aggregation = NULL,
+      metric_table = NULL,
+      metric = NULL,
+      type_fact = NULL,
+      fact_graph = NULL,
+      fact_graph_sel = NULL,
+      list_fact = NULL,
+      list_fact_sel = NULL
+    )
+
     shiny::observeEvent({
         input$boxplot_aggregation
         load_file()
@@ -214,12 +225,16 @@ mod_boxplot_server <- function(id, load_file){
     shiny::observeEvent(input$boxplot_launch_button, {
       shiny::showModal(shiny::modalDialog("Creation of graphics...", footer = NULL))
 
-      aggregation = input$boxplot_aggregation
-      metric_table = input$boxplot_metric_table
-      metric = input$boxplot_metric
-      type_fact = input$boxplot_type_fact
-      fact_graph = if (!is.null(input$boxplot_factGraph)) input$boxplot_factGraph else ""
-      fact_graph_sel = if (!is.null(input$boxplot_factGraphSel)){
+      params$aggregation <- input$boxplot_aggregation
+      params$metric_table <- input$boxplot_metric_table
+      params$metric <- input$boxplot_metric
+      params$type_fact <- input$boxplot_type_fact
+      params$fact_graph <- if (!is.null(input$boxplot_factGraph) && input$boxplot_factGraph != "NA"){
+        input$boxplot_factGraph
+      } else{
+        ""
+      }
+      params$fact_graph_sel <- if (!is.null(input$boxplot_factGraphSel) && input$boxplot_factGraphSel != "NA"){
         input$boxplot_factGraphSel
       } else{
         nextStep <- switch(input$boxplot_aggregation,
@@ -231,8 +246,8 @@ mod_boxplot_server <- function(id, load_file){
           dataEnv = .GlobalEnv, level = 0)[, input$boxplot_factGraph])
         sel <- as.character(sel)
       }
-      list_fact = input$boxplot_listFact
-      list_fact_sel = lapply(1:length_listFact(), function(i){
+      params$list_fact <- input$boxplot_listFact
+      params$list_fact_sel <- lapply(1:length_listFact(), function(i){
         id <- paste("boxplot_listFactSel_", i, sep = "")
         if (!is.null(input[[id]])) input[[id]] else NA
       })
@@ -244,18 +259,82 @@ mod_boxplot_server <- function(id, load_file){
 
           output[[id]] <- shiny::renderPlot({
             PAMPA::boxplot_pampa.f(
-              agregation = aggregation,
-              metrique = metric,
-              factGraph = fact_graph,
-              factGraphSel = fact_graph_sel[iFact],
-              listFact = list_fact,
-              listFactSel = list_fact_sel,
-              tableMetrique = metric_table,
-              dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
+              agregation = params$aggregation,
+              metrique = params$metric,
+              factGraph = params$fact_graph,
+              factGraphSel = params$fact_graph_sel[iFact],
+              listFact = params$list_fact,
+              listFactSel = params$list_fact_sel,
+              tableMetrique = params$metric_table,
+              new_window = FALSE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
             )
           })
         })
       })
+      shiny::removeModal()
+    })
+
+    shiny::observeEvent(input$boxplot_save_graphics, {
+      shiny::showModal(shiny::modalDialog(
+        shiny::h4("Choose the format for the file:"),
+        div(
+          shiny::checkboxInput(ns("boxplot_format_pdf"), "pdf", value = FALSE),
+          shiny::checkboxInput(ns("boxplot_format_png"), "png", value = FALSE),
+          shiny::checkboxInput(ns("boxplot_format_wmf"), "wmf", value = FALSE),
+          style = "margin-left:25px;"
+        ),
+        shiny::h5(paste("The files will be saved at ", get("filePathes", envir = .GlobalEnv)["results"])),
+        title = "Save graphics",
+        footer = shiny::tagList(
+          shiny::actionButton(ns("boxplot_save"), "Save"),
+          shiny::modalButton("Cancel")
+        )
+      ))
+    })
+
+    shiny::observeEvent(input$boxplot_save, {
+      if (input$boxplot_format_pdf){
+        setOption("P.graphPDF", input$boxplot_format_pdf)
+        PAMPA::boxplot_pampa.f(
+          agregation = params$aggregation,
+          metrique = params$metric,
+          factGraph = params$fact_graph,
+          factGraphSel = params$fact_graph_sel,
+          listFact = params$list_fact,
+          listFactSel = params$list_fact_sel,
+          tableMetrique = params$metric_table,
+          new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
+        )
+        setOption("P.graphPDF", FALSE)
+      }
+      if (input$boxplot_format_png){
+        setOption("P.graphPNG", input$boxplot_format_png)
+        PAMPA::boxplot_pampa.f(
+          agregation = params$aggregation,
+          metrique = params$metric,
+          factGraph = params$fact_graph,
+          factGraphSel = params$fact_graph_sel,
+          listFact = params$list_fact,
+          listFactSel = params$list_fact_sel,
+          tableMetrique = params$metric_table,
+          new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
+        )
+        setOption("P.graphPNG", FALSE)
+      }
+      if (input$boxplot_format_wmf){
+        setOption("P.graphWMF", input$boxplot_format_wmf)
+        PAMPA::boxplot_pampa.f(
+          agregation = params$aggregation,
+          metrique = params$metric,
+          factGraph = params$fact_graph,
+          factGraphSel = params$fact_graph_sel,
+          listFact = params$list_fact,
+          listFactSel = params$list_fact_sel,
+          tableMetrique = params$metric_table,
+          new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
+        )
+        setOption("P.graphWMF", FALSE)
+      }
       shiny::removeModal()
     })
   })

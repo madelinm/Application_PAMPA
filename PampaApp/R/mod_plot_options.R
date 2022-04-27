@@ -27,11 +27,11 @@ mod_plot_options_server <- function(id){
       axes = getOption("P.axesLabels"),
       text_size = getOption("P.cex"),
       min_obs = getOption("P.MinNbObs"),
-      pdf = getOption("P.graphPDF"),
+#      pdf = getOption("P.graphPDF"),
       one_file_page = getOption("P.PDFunFichierPage"),
       embed_fonts = getOption("P.pdfEmbedFonts"),
-      png = getOption("P.graphPNG"),
-      wmf = getOption("P.graphWMF"),
+#      png = getOption("P.graphPNG"),
+#      wmf = getOption("P.graphWMF"),
       multiple_graphics_page = getOption("P.plusieursGraphPage"),
       nrow_graph = getOption("P.nrowGraph"),
       ncol_graph = getOption("P.ncolGraph")
@@ -64,8 +64,9 @@ mod_plot_options_server <- function(id){
         ),
         shiny::column(width = 6, style = "border-left: 1px solid",
           shiny::h4("Output options :"),
-          shiny::checkboxInput(ns("plot_options_pdf"), "PDF files?",
-            value = getOption("P.graphPDF")),
+#          shiny::checkboxInput(ns("plot_options_pdf"), "PDF files?",
+#            value = getOption("P.graphPDF")),
+          shiny::h5("Options for pdf files:"),
           shiny::div(
             shiny::checkboxInput(ns("plot_options_one_file_page"), "One file per page (PDF)?",
               value = getOption("P.PDFunFichierPage")),
@@ -73,10 +74,10 @@ mod_plot_options_server <- function(id){
               value = getOption("P.pdfEmbedFonts")),
             style = "margin-left:25px;"
           ),
-          shiny::checkboxInput(ns("plot_options_png"), "PNG files?",
-            value = getOption("P.graphPNG")),
-          shiny::checkboxInput(ns("plot_options_wmf"), "WMF files? (+ displayed on screen; Windows only)",
-            value = getOption("P.graphWMF")),
+#          shiny::checkboxInput(ns("plot_options_png"), "PNG files?",
+#            value = getOption("P.graphPNG")),
+#          shiny::checkboxInput(ns("plot_options_wmf"), "WMF files? (+ displayed on screen; Windows only)",
+#            value = getOption("P.graphWMF")),
           shiny::checkboxInput(ns("plot_options_multiple_graphics_page"), "Multiple graphics per page",
             value = getOption("P.plusieursGraphPage")),
           shiny::column(width = 6,
@@ -88,7 +89,9 @@ mod_plot_options_server <- function(id){
               choices = c(1, 2, 3), selected = getOption("P.ncolGraph"))
           ),
         ),
-        shiny::HTML("1. bla bla bla<br/>2. bla bla bla<br/>3. bla bla bla<br/> 4. bla bla bla<br/>5. bla bla bla"),
+        shiny::HTML("1. bla bla bla<br/>2. bla bla bla<br/>3. bla bla bla<br/>4. bla bla bla<br/>
+          5. bla bla bla<br/>6. bla bla bla<br/>7. bla bla bla<br/>8. bla bla bla<br/>
+          9. bla bla bla<br/>10. bla bla bla"),
         title = "Common graphical options",
         footer = shiny::tagList(
           shiny::actionButton(ns("plot_options_ok"), "OK"),
@@ -132,11 +135,11 @@ mod_plot_options_server <- function(id){
       setOption("P.axesLabels", input$plot_options_axes)
       setOption("P.cex", input$plot_options_text_size)
       setOption("P.MinNbObs", input$plot_options_min_observation)
-      setOption("P.graphPDF", input$plot_options_pdf)
+#      setOption("P.graphPDF", input$plot_options_pdf)
       setOption("P.PDFunFichierPage", input$plot_options_one_file_page)
       setOption("P.pdfEmbedFonts", input$plot_options_embed_fonts)
-      setOption("P.graphPNG", input$plot_options_png)
-      setOption("P.graphWMF", input$plot_options_wmf)
+#      setOption("P.graphPNG", input$plot_options_png)
+#      setOption("P.graphWMF", input$plot_options_wmf)
       setOption("P.plusieursGraphPage", input$plot_options_multiple_graphics_page)
       setOption("P.nrowGraph", input$plot_options_nrow_graph)
       setOption("P.ncolGraph", input$plot_options_ncol_graph)
@@ -152,11 +155,11 @@ mod_plot_options_server <- function(id){
       setOption("P.axesLabels", optn$axes)
       setOption("P.cex", optn$text_size)
       setOption("P.MinNbObs", optn$min_obs)
-      setOption("P.graphPDF", optn$pdf)
+#      setOption("P.graphPDF", optn$pdf)
       setOption("P.PDFunFichierPage", optn$one_file_page)
       setOption("P.pdfEmbedFonts", optn$embed_fonts)
-      setOption("P.graphPNG", optn$png)
-      setOption("P.graphWMF", optn$wmf)
+#      setOption("P.graphPNG", optn$png)
+#      setOption("P.graphWMF", optn$wmf)
       setOption("P.plusieursGraphPage", optn$multiple_graphics_page)
       setOption("P.nrowGraph", optn$nrow_graph)
       setOption("P.ncolGraph", optn$ncol_graph)
@@ -168,11 +171,11 @@ mod_plot_options_server <- function(id){
       shiny::updateCheckboxInput(inputId = "plot_options_axes", value = optn$axes)
       shiny::updateNumericInput(inputId = "plot_options_text_size", value = optn$text_size)
       shiny::updateNumericInput(inputId = "plot_options_min_observation", value = optn$min_obs)
-      shiny::updateCheckboxInput(inputId = "plot_options_pdf", value = optn$pdf)
+#      shiny::updateCheckboxInput(inputId = "plot_options_pdf", value = optn$pdf)
       shiny::updateCheckboxInput(inputId = "plot_options_one_file_page", value = optn$one_file_page)
       shiny::updateCheckboxInput(inputId = "plot_options_embed_fonts", value = optn$embed_fonts)
-      shiny::updateCheckboxInput(inputId = "plot_options_png", value = optn$png)
-      shiny::updateCheckboxInput(inputId = "plot_options_wmf", value = optn$wmf)
+#      shiny::updateCheckboxInput(inputId = "plot_options_png", value = optn$png)
+#      shiny::updateCheckboxInput(inputId = "plot_options_wmf", value = optn$wmf)
       shiny::updateCheckboxInput(inputId = "plot_options_multiple_graphics_page", value = optn$multiple_graphics_page)
       shiny::updateSelectInput(inputId = "plot_options_nrow_graph", selected = optn$nrow_graph)
       shiny::updateSelectInput(inputId = "plot_options_ncol_graph", selected = optn$ncol_graph)
