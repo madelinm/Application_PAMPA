@@ -75,7 +75,7 @@ mod_boxplot_server <- function(id, load_file){
     })
 
     length_factGraphSel <- shiny::reactive({
-      if (!is.null(input$boxplot_factGraphSel)){
+      if (!is.null(input$boxplot_factGraphSel) && input$boxplot_factGraphSel != "NA"){
         length(input$boxplot_factGraphSel)
       } else{
         nextStep <- switch(input$boxplot_aggregation,
@@ -204,12 +204,12 @@ mod_boxplot_server <- function(id, load_file){
             "refesp" = spRefFields.aliases(site = getOption("P.MPA"), dataEnv = .GlobalEnv,
               ordered = TRUE, tableMetrique = input$boxplot_metric_table)
           )
-          shiny::updateSelectInput(inputId = "boxplot_factGraph", choices = c("", "none", " ", choices))
+          shiny::updateSelectInput(inputId = "boxplot_factGraph", choices = c("", NA, choices))
         }
     })
 
     shiny::observeEvent(input$boxplot_factGraph, {
-      if(input$boxplot_factGraph != ""){
+      if(input$boxplot_factGraph != "" & input$boxplot_factGraph != "NA"){
         nextStep <- switch(input$boxplot_aggregation,
           "espece" = "boxplot.esp",
           "unitobs" = "boxplot.unitobs")
@@ -217,8 +217,10 @@ mod_boxplot_server <- function(id, load_file){
           facts = input$boxplot_factGraph, selections = append(list(NA), NA),
           metrique = input$boxplot_metric, nextStep = nextStep,
           dataEnv = .GlobalEnv, level = 0)[, input$boxplot_factGraph])
-        shiny::updateSelectInput(inputId = "boxplot_factGraphSel", choices = c("", choices))
         choices <- sort(as.character(choices))
+        shiny::updateSelectInput(inputId = "boxplot_factGraphSel", choices = c("", NA, choices))
+      } else{
+        shiny::updateSelectInput(inputId = "boxplot_factGraphSel", choices = c())
       }
     })
 
