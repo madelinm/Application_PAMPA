@@ -41,7 +41,8 @@ mod_boxplot_options_server <- function(id){
       shiny::showModal(shiny::modalDialog(
         shiny::column(width = 6,
           shiny::checkboxInput(ns("boxplot_options_max_exclu"), "Do not display extreme values",
-            value = getOption("P.maxExclu")),
+            value = getOption("P.maxExclu")
+          ),
           shiny::div(
             shiny::numericInput(ns("boxplot_options_prop_max"), "(greater than ... x the max value)?",
               value = getOption("P.GraphPartMax"), step = 0.05),
@@ -91,7 +92,7 @@ mod_boxplot_options_server <- function(id){
         shiny::HTML("bla bla bla"),
         title = "Boxplot options",
         footer = shiny::tagList(
-          shiny::actionButton(ns("boxplot_options_ok"), "OK"),
+          shiny::actionButton(ns("boxplot_options_ok"), "Ok"),
           shiny::modalButton("Cancel"),
           shiny::actionButton(ns("boxplot_options_reset"), "Reset")
         ),

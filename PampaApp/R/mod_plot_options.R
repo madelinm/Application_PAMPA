@@ -47,7 +47,8 @@ mod_plot_options_server <- function(id){
           ),
           shiny::selectInput(ns("plot_options_language"), "Language for axis labels",
             choices = c("en", "fr"),
-            selected = getOption("P.lang")),
+            selected = getOption("P.lang")
+          ),
           shiny::checkboxInput(ns("plot_options_publication"),
             "Simplified graphics for publishing (smaller, no title)",
             value = getOption("P.graphPaper")),

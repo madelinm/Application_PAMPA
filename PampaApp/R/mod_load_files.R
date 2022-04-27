@@ -44,12 +44,11 @@ mod_load_files_ui <- function(id){
         )
       )
     ),
-    mainPanel(
+    shiny::mainPanel(width = 9,
       shiny::h3("Observation Table", align = "center"),
       shiny::h4("Filters :", align = "center"),
       shiny::htmlOutput(ns("text_filters"), align = "center"),
-      shiny::dataTableOutput(ns("obs_table")),
-      width = 9
+      shiny::dataTableOutput(ns("obs_table"))
     )
   )
 }
@@ -59,6 +58,8 @@ mod_load_files_ui <- function(id){
 #' @noRd
 #'
 #' @import shinyjs
+#' @import shinyFiles
+#' @import fs
 mod_load_files_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns

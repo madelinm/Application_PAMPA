@@ -13,9 +13,13 @@ mod_boxplot_ui <- function(id){
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
       shiny::h3("Boxplot", align = "center"),
+      shiny::h5("One value of metric per observation unit.", align = "center"),
       shiny::br(),
       shinyWidgets::radioGroupButtons(ns("boxplot_aggregation"), "Choose an aggregation",
-        choices = c("espece", "unitobs"),
+        choices = c(
+          "species" = "espece",
+          "species groups" = "unitobs"
+        ),
         justified = TRUE
       ),
       shiny::radioButtons(ns("boxplot_metric_table"), "Choose a metric table",
@@ -34,7 +38,7 @@ mod_boxplot_ui <- function(id){
       shiny::selectInput(ns("boxplot_factGraph"), "Select the factor for the graphic separation",
         choices = c()
       ),
-      shiny::selectInput(ns("boxplot_factGraphSel"), "Select modalities of the factor for the  graphic separation",
+      shiny::selectInput(ns("boxplot_factGraphSel"), "Select categories of the factor for the  graphic separation",
         choices = c(), multiple = TRUE
       ),
       shiny::selectInput(ns("boxplot_listFact"), "Select explanatory factor(s) for plotting",
@@ -51,9 +55,10 @@ mod_boxplot_ui <- function(id){
         align = "center"
       )
     ),
-    mainPanel(
+    shiny::mainPanel(width = 9,
       shiny::h3("Graphics", align = "center"),
-      shiny::uiOutput(ns("graph_boxplot"))
+      shiny::actionButton(ns("boxplot_save_graphics"), "Save graphics"),
+      shiny::uiOutput(ns("boxplot"))
     )
   )
 }
@@ -104,6 +109,7 @@ mod_boxplot_server <- function(id, load_file){
             )
           }
           shiny::updateRadioButtons(inputId = "boxplot_type_fact",
+            label = "Generate one plot per...",
             choices = c(
               "... station characteristics" = "unitobs",
               "... species characteristic" = "refesp"),
@@ -127,6 +133,7 @@ mod_boxplot_server <- function(id, load_file){
             )
           }
           shiny::updateRadioButtons(inputId = "boxplot_type_fact",
+            label = "Subset species per...",
             choices = c(
               "... species characteristic" = "refesp")
           )
@@ -139,7 +146,7 @@ mod_boxplot_server <- function(id, load_file){
         paste("boxplot_listFactSel_", i, sep = "")
       })
       labels_input <- sapply(1:nb_input, function(i){
-        paste("Choose modalities for ", input$boxplot_listFact[i], sep = "")
+        paste("Choose categories for ", input$boxplot_listFact[i], sep = "")
       })
       output_listFactSel <- shiny::tagList()
       if (nb_input > 0){
@@ -199,8 +206,8 @@ mod_boxplot_server <- function(id, load_file){
           facts = input$boxplot_factGraph, selections = append(list(NA), NA),
           metrique = input$boxplot_metric, nextStep = nextStep,
           dataEnv = .GlobalEnv, level = 0)[, input$boxplot_factGraph])
-        choices <- as.character(choices)
         shiny::updateSelectInput(inputId = "boxplot_factGraphSel", choices = c("", choices))
+        choices <- sort(as.character(choices))
       }
     })
 
@@ -230,7 +237,7 @@ mod_boxplot_server <- function(id, load_file){
         if (!is.null(input[[id]])) input[[id]] else NA
       })
 
-      output$graph_boxplot <- shiny::renderUI({
+      output$boxplot <- shiny::renderUI({
         lapply(1:isolate(length_factGraphSel()), function(iFact){
           id <- paste("boxplot_", iFact, sep = "")
           shiny::plotOutput(outputId = id)

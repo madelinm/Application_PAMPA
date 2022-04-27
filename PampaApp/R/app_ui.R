@@ -20,10 +20,17 @@ app_ui <- function(request) {
 #      title = img(src = "test.png"),
       shiny::tabPanel("Load Data",
         shiny::fluidPage(
+#          tags$head(
+#            tags$style(HTML("
+#                img {
+#                  max-width: 100%;
+#                }
+#              "))
+#          ),
           mod_load_files_ui("load_files_1")
         )
       ),
-      shiny::navbarMenu("Graphics",
+      shiny::navbarMenu("Plots",
         shiny::tabPanel("Boxplot",
           shiny::fluidPage(
             mod_boxplot_ui("boxplot_1")
