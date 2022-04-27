@@ -13,5 +13,9 @@ app_server <- function(input, output, session) {
   mod_boxplot_options_server("boxplot_options_1")
   mod_plot_options_server("plot_options_2")
 
+  mod_barplot_server("barplot_1", load_file)
+  mod_barplot_options_server("barplot_options_1")
+  mod_plot_options_server("plot_options_3")
+
   mod_plot_options_server("plot_options_1")
 }

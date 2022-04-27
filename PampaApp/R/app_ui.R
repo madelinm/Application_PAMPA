@@ -35,6 +35,11 @@ app_ui <- function(request) {
           shiny::fluidPage(
             mod_boxplot_ui("boxplot_1")
           )
+        ),
+        shiny::tabPanel("Barplot",
+          shiny::fluidPage(
+            mod_barplot_ui("barplot_1")
+          )
         )
       ),
       shiny::tabPanel("Options",
