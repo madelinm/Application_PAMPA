@@ -78,12 +78,9 @@ mod_barplot_server <- function(id, load_file){
       if (!is.null(input$barplot_factGraphSel) && input$barplot_factGraphSel != "NA"){
         length(input$barplot_factGraphSel)
       } else{
-        nextStep <- switch(input$barplot_aggregation,
-          "espece" = "barplot.esp",
-          "unitobs" = "barplot.unitobs")
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = input$barplot_metric_table,
           facts = input$barplot_factGraph, selections = append(list(NA), NA),
-          metrique = input$barplot_metric, nextStep = nextStep,
+          metrique = input$barplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$barplot_factGraph])
         sel <- as.character(sel)
         length(sel)
@@ -99,6 +96,12 @@ mod_barplot_server <- function(id, load_file){
       fact_graph_sel = NULL,
       list_fact = NULL,
       list_fact_sel = NULL
+    )
+
+    next_step <- reactive(
+      switch(input$boxplot_aggregation,
+        "espece" = "boxplot.esp",
+        "unitobs" = "boxplot.unitobs")
     )
 
     shiny::observeEvent({
@@ -162,12 +165,9 @@ mod_barplot_server <- function(id, load_file){
       output_listFactSel <- shiny::tagList()
       if (nb_input > 0){
         for (i in 1:nb_input){
-          nextStep <- switch(input$barplot_aggregation,
-            "espece" = "barplot.esp",
-            "unitobs" = "barplot.unitobs")
           choices <- unique(selectModalites.f(tableMetrique = input$barplot_metric_table,
             facts = input$barplot_listFact[i], selections = append(list(NA), NA),
-            metrique = input$barplot_metric, nextStep = nextStep, dataEnv = .GlobalEnv,
+            metrique = input$barplot_metric, nextStep = next_step(), dataEnv = .GlobalEnv,
             level = 1)[, input$barplot_listFact[i]])
           choices <- as.character(choices)
           output_listFactSel[[i]] <- shiny::tagList()
@@ -210,12 +210,9 @@ mod_barplot_server <- function(id, load_file){
 
     shiny::observeEvent(input$barplot_factGraph, {
       if(input$barplot_factGraph != "" & input$barplot_factGraph != "NA"){
-        nextStep <- switch(input$barplot_aggregation,
-          "espece" = "barplot.esp",
-          "unitobs" = "barplot.unitobs")
         choices <- unique(PAMPA:::selectModalites.f(tableMetrique = input$barplot_metric_table,
           facts = input$barplot_factGraph, selections = append(list(NA), NA),
-          metrique = input$barplot_metric, nextStep = nextStep,
+          metrique = input$barplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$barplot_factGraph])
         choices <- as.character(choices)
         shiny::updateSelectInput(inputId = "barplot_factGraphSel", choices = c("", NA, choices))
@@ -239,12 +236,9 @@ mod_barplot_server <- function(id, load_file){
       params$fact_graph_sel = if (!is.null(input$barplot_factGraphSel) && input$barplot_factGraphSel != "NA"){
         input$barplot_factGraphSel
       } else{
-        nextStep <- switch(input$barplot_aggregation,
-          "espece" = "barplot.esp",
-          "unitobs" = "barplot.unitobs")
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = input$barplot_metric_table,
           facts = input$barplot_factGraph, selections = append(list(NA), NA),
-          metrique = input$barplot_metric, nextStep = nextStep,
+          metrique = input$barplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$barplot_factGraph])
         sel <- as.character(sel)
       }
