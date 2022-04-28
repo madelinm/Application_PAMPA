@@ -99,9 +99,9 @@ mod_barplot_server <- function(id, load_file){
     )
 
     next_step <- reactive(
-      switch(input$boxplot_aggregation,
-        "espece" = "boxplot.esp",
-        "unitobs" = "boxplot.unitobs")
+      switch(input$barplot_aggregation,
+        "espece" = "barplot.esp",
+        "unitobs" = "barplot.unitobs")
     )
 
     shiny::observeEvent({
@@ -214,7 +214,7 @@ mod_barplot_server <- function(id, load_file){
           facts = input$barplot_factGraph, selections = append(list(NA), NA),
           metrique = input$barplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$barplot_factGraph])
-        choices <- as.character(choices)
+        choices <- sort(as.character(choices))
         shiny::updateSelectInput(inputId = "barplot_factGraphSel", choices = c("", NA, choices))
       } else{
         shiny::updateSelectInput(inputId = "barplot_factGraphSel", choices = c())
@@ -262,7 +262,7 @@ mod_barplot_server <- function(id, load_file){
               listFact = params$list_fact,
               listFactSel = params$list_fact_sel,
               tableMetrique = params$metric_table,
-              dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
+              new_window = FALSE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
             )
           })
         })
