@@ -84,7 +84,7 @@ mod_occurrence_frequencies_server <- function(id, load_file){
     metric_table <- "TablePresAbs"
     metric <- "pres.abs"
 
-    params <- reactiveValues(
+    params <- shiny::reactiveValues(
       aggregation = NULL,
       metric_table = "TablePresAbs",
       metric = "pres.abs",
@@ -95,7 +95,7 @@ mod_occurrence_frequencies_server <- function(id, load_file){
       list_fact_sel = NULL
     )
 
-    next_step <- reactive(
+    next_step <- shiny::reactive(
       switch(input$occurrence_aggregation,
         "espece" = "freq_occurrence",
         "unitobs" = "freq_occurrence.unitobs")
@@ -162,7 +162,7 @@ mod_occurrence_frequencies_server <- function(id, load_file){
       output_listFactSel <- shiny::tagList()
       if (nb_input > 0){
         for (i in 1:nb_input){
-          choices <- unique(selectModalites.f(tableMetrique = metric_table,
+          choices <- unique(PAMPA:::selectModalites.f(tableMetrique = metric_table,
             facts = input$occurrence_listFact[i], selections = append(list(NA), NA),
             metrique = metric, nextStep = next_step(), dataEnv = .GlobalEnv,
             level = 1)[, input$occurrence_listFact[i]])
@@ -191,7 +191,7 @@ mod_occurrence_frequencies_server <- function(id, load_file){
           choices <- switch(input$occurrence_type_fact,
             "unitobs" = PAMPA:::UnitobsFields.aliases(dataEnv = .GlobalEnv, ordered = TRUE,
               tableMetrique = metric_table),
-            "refesp" = spRefFields.aliases(site = getOption("P.MPA"), dataEnv = .GlobalEnv,
+            "refesp" = PAMPA:::spRefFields.aliases(site = getOption("P.MPA"), dataEnv = .GlobalEnv,
               ordered = TRUE, tableMetrique = metric_table)
           )
           shiny::updateSelectInput(inputId = "occurrence_factGraph", choices = c("", NA, choices))

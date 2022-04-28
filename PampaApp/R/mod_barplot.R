@@ -87,7 +87,7 @@ mod_barplot_server <- function(id, load_file){
       }
     })
 
-    params <- reactiveValues(
+    params <- shiny::reactiveValues(
       aggregation = NULL,
       metric_table = NULL,
       metric = NULL,
@@ -98,7 +98,7 @@ mod_barplot_server <- function(id, load_file){
       list_fact_sel = NULL
     )
 
-    next_step <- reactive(
+    next_step <- shiny::reactive(
       switch(input$barplot_aggregation,
         "espece" = "barplot.esp",
         "unitobs" = "barplot.unitobs")
@@ -165,7 +165,7 @@ mod_barplot_server <- function(id, load_file){
       output_listFactSel <- shiny::tagList()
       if (nb_input > 0){
         for (i in 1:nb_input){
-          choices <- unique(selectModalites.f(tableMetrique = input$barplot_metric_table,
+          choices <- unique(PAMPA:::selectModalites.f(tableMetrique = input$barplot_metric_table,
             facts = input$barplot_listFact[i], selections = append(list(NA), NA),
             metrique = input$barplot_metric, nextStep = next_step(), dataEnv = .GlobalEnv,
             level = 1)[, input$barplot_listFact[i]])
@@ -201,7 +201,7 @@ mod_barplot_server <- function(id, load_file){
           choices <- switch(input$barplot_type_fact,
             "unitobs" = PAMPA:::UnitobsFields.aliases(dataEnv = .GlobalEnv, ordered = TRUE,
               tableMetrique = input$barplot_metric_table),
-            "refesp" = spRefFields.aliases(site = getOption("P.MPA"), dataEnv = .GlobalEnv,
+            "refesp" = PAMPA:::spRefFields.aliases(site = getOption("P.MPA"), dataEnv = .GlobalEnv,
               ordered = TRUE, tableMetrique = input$barplot_metric_table)
           )
           shiny::updateSelectInput(inputId = "barplot_factGraph", choices = c("", NA, choices))
