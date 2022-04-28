@@ -45,6 +45,7 @@ mod_occurrence_frequencies_ui <- function(id){
         align = "center"
       ),
       shiny::div(
+        mod_occurrence_frequencies_options_ui("occurrence_frequencies_options_1"),
         mod_plot_options_ui("plot_options_2"),
         align = "center"
       )
