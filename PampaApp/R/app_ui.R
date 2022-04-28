@@ -40,6 +40,11 @@ app_ui <- function(request) {
           shiny::fluidPage(
             mod_barplot_ui("barplot_1")
           )
+        ),
+        shiny::tabPanel("Occurrence frequencies",
+          shiny::fluidPage(
+            mod_occurrence_frequencies_ui("occurrence_frequencies_1")
+          )
         )
       ),
       shiny::tabPanel("Options",
