@@ -34,6 +34,7 @@ mod_family_frequencies_ui <- function(id){
         align = "center"
       ),
       shiny::div(
+        mod_family_frequencies_options_ui("family_frequencies_options_1"),
         mod_plot_options_ui("plot_options_5"),
         align = "center"
       )
