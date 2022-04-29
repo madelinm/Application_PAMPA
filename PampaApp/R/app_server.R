@@ -21,5 +21,9 @@ app_server <- function(input, output, session) {
   mod_occurrence_frequencies_options_server("occurrence_frequencies_options_1")
   mod_plot_options_server("plot_options_4")
 
+  mod_family_frequencies_server("family_frequencies_1", load_file)
+  mod_family_frequencies_options_server("family_frequencies_options_1")
+  mod_plot_options_server("plot_options_5")
+
   mod_plot_options_server("plot_options_1")
 }

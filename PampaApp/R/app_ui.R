@@ -45,6 +45,11 @@ app_ui <- function(request) {
           shiny::fluidPage(
             mod_occurrence_frequencies_ui("occurrence_frequencies_1")
           )
+        ),
+        shiny::tabPanel("Family frequencies",
+          shiny::fluidPage(
+            mod_family_frequencies_ui("family_frequencies_1")
+          )
         )
       ),
       shiny::tabPanel("Options",
