@@ -24,7 +24,7 @@ mod_barplot_ui <- function(id){
       ),
       shiny::radioButtons(ns("barplot_metric_table"), "Choose a metric table",
         choices = c(
-          "... / station / size classe" = "unitSpSz",
+          "... / station / size class" = "unitSpSz",
           "... / station" = "unitSp")
       ),
       shiny::selectInput(ns("barplot_metric"), "Select a metric",
@@ -117,7 +117,7 @@ mod_barplot_server <- function(id, load_file){
           } else{
             shiny::updateRadioButtons(inputId = "barplot_metric_table",
               choices = c(
-                "... / station / species / size classe" = "unitSpSz",
+                "... / station / species / size class" = "unitSpSz",
                 "... / station / species" = "unitSp"),
               selected = "unitSp"
             )
@@ -140,7 +140,7 @@ mod_barplot_server <- function(id, load_file){
           } else{
             shiny::updateRadioButtons(inputId = "barplot_metric_table",
               choices = c(
-                "... / station / size classe" = "unitSpSz",
+                "... / station / size class" = "unitSpSz",
                 "... / station" = "unitSp",
                 "... of biodiversity (/ station)" = "unit"),
               selected = "unitSp"

@@ -26,7 +26,7 @@ mod_family_frequencies_ui <- function(id){
       shiny::selectInput(ns("family_factSel"), "Select categories for the explanatory factor",
         choices = c(), multiple = TRUE
       ),
-      shiny::selectInput(ns("family_families"), "Select families to studies",
+      shiny::selectInput(ns("family_families"), "Select families to study",
         choices = c(), multiple = TRUE
       ),
       shiny::div(
