@@ -8,23 +8,33 @@
 #'
 #' @importFrom shiny NS tagList
 #' @import shinyFiles
+#' @import shinyjs
+#' @import shinyWidgets
 mod_load_files_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
       shinyjs::useShinyjs(),
-      shiny::h3("Load data", align = "center"),
+      shiny::h3("Data / Files", align = "center"),
       shiny::br(),
-      shiny::tagList(
+      shinyWidgets::radioGroupButtons(ns("data_load_selection"), "",
+        choices = c(
+          "Load" = "load",
+          "Data subsetting" = "selection"
+        ),
+        justified = TRUE
+      ),
+      shiny::div(id = ns("data_load"),
+        shiny::br(),
         shinyFiles::shinyDirButton(ns("load_ws"), "Select the working directory", "Select a folder", FALSE),
         shiny::br(),
         shiny::br(),
-        shiny::fileInput(ns("load_obs_file"), "Choose an observation file"),
         shiny::fileInput(ns("load_unitobs_file"), "Choose an unitobs file"),
+        shiny::fileInput(ns("load_obs_file"), "Choose an observation file"),
         shiny::fileInput(ns("load_refesp_file"), "Choose a species reference table"),
         shiny::fileInput(ns("load_local_refesp_file"), "Choose a local species reference table"),
         shiny::fileInput(ns("load_refspa_file"), "Choose a spatial reference table"),
-        shiny::numericInput(ns("load_dmin"), "Max value for Dmin (in m) (for video data only)", value = 5),
+        shiny::numericInput(ns("load_dmin"), "Max value for Dmin (in m) (for STAVIRO data only)", value = 5),
         shiny::div(
           shiny::actionButton(ns("load_load_data_button"), "Load"),
           shiny::actionButton(ns("load_reset_button"), "Reset"),
@@ -33,14 +43,25 @@ mod_load_files_ui <- function(id){
         shiny::br(),
         shiny::br()
       ),
-      shiny::h3("Selection on data", align = "center"),
-      shiny::br(),
-      shiny::tagList(
-        shiny::div(
-          shiny::actionButton(ns("load_selection_unitobs"), "Selection on unitobs"),
-          shiny::actionButton(ns("load_selection_refesp"), "Selection on refesp"),
-          shiny::actionButton(ns("load_restore_data"), "Restore data"),
-          align = "center"
+#      shiny::h3("Selection on data", align = "center"),
+#      shiny::br(),
+      shinyjs::hidden(
+        shiny::div(id = ns("data_selection"),
+          shiny::br(),
+          shiny::strong("Data subsetting according to observation unit"),
+          shiny::br(),
+          shiny::actionButton(ns("load_selection_unitobs"), "Selection"),
+          shiny::br(),
+          shiny::br(),
+          shiny::strong("Data subsetting according to species"),
+          shiny::br(),
+          shiny::actionButton(ns("load_selection_refesp"), "Selection"),
+          shiny::br(),
+          shiny::br(),
+          shiny::strong("Restore initial data"),
+          shiny::br(),
+          shiny::actionButton(ns("load_restore_data"), "Restore"),
+#          align = "center"
         )
       )
     ),
@@ -63,6 +84,17 @@ mod_load_files_ui <- function(id){
 mod_load_files_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
+
+    shiny::observeEvent(input$data_load_selection, {
+      if (input$data_load_selection == "load"){
+        shinyjs::show("data_load")
+        shinyjs::hide("data_selection")
+      } else{
+        shinyjs::hide("data_load")
+        shinyjs::show("data_selection")
+      }
+    })
+
     volumes <- c(Home = fs::path_home(), "R Installation" = R.home(), shinyFiles::getVolumes()())
     shinyFiles::shinyDirChoose(input, "load_ws", roots = volumes, session = session, restrictions = system.file(package = "base"))
 
