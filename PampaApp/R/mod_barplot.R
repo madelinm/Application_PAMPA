@@ -32,13 +32,13 @@ mod_barplot_ui <- function(id){
       ),
       shiny::radioButtons(ns("barplot_type_fact"), "Subset species per...",
         choices = c(
-          "... station characteristics" = "unitobs",
-          "... species characteristics" = "refesp")
+          "... station characteristic" = "unitobs",
+          "... species characteristic" = "refesp")
       ),
       shiny::selectInput(ns("barplot_factGraph"), "Select the factor for the graphic separation",
         choices = c()
       ),
-      shiny::selectInput(ns("barplot_factGraphSel"), "Select categories of the factor for the  graphic separation",
+      shiny::selectInput(ns("barplot_factGraphSel"), "Select categories of the factor for the  graphic separation (all by default)",
         choices = c(), multiple = TRUE
       ),
       shiny::selectInput(ns("barplot_listFact"), "Select explanatory factor(s) for plotting",
@@ -125,7 +125,7 @@ mod_barplot_server <- function(id, load_file){
           shiny::updateRadioButtons(inputId = "barplot_type_fact",
             label = "Generate one plot per...",
             choices = c(
-              "... station characteristics" = "unitobs",
+              "... station characteristic" = "unitobs",
               "... species characteristic" = "refesp"),
             selected = "refesp"
           )
@@ -160,7 +160,7 @@ mod_barplot_server <- function(id, load_file){
         paste("barplot_listFactSel_", i, sep = "")
       })
       labels_input <- sapply(1:nb_input, function(i){
-        paste("Choose categories for ", input$barplot_listFact[i], sep = "")
+        paste("Choose categories for ", input$barplot_listFact[i], " (all by default)", sep = "")
       })
       output_listFactSel <- shiny::tagList()
       if (nb_input > 0){

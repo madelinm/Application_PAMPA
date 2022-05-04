@@ -12,21 +12,21 @@ mod_family_frequencies_ui <- function(id){
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
       shiny::h3("Family frequencies", align = "center"),
-      shiny::h5("One value per combination of factor level", align = "center"),
+      shiny::h5("One value per family for each combination of factor level", align = "center"),
       shiny::br(),
-      shiny::selectInput(ns("family_factGraph"), "Select the factor for the graphic separation",
+      shiny::selectInput(ns("family_factGraph"), "Select a 1st explanatory factor for plotting",
         choices = c()
       ),
-      shiny::selectInput(ns("family_factGraphSel"), "Select categories of the factor for the graphic separation",
+      shiny::selectInput(ns("family_factGraphSel"), "Select categories for the explanatory factor (all by default)",
         choices = c(), multiple = TRUE
       ),
-      shiny::selectInput(ns("family_fact"), "Select explanatory factor for plotting",
+      shiny::selectInput(ns("family_fact"), "Select a 2nd explanatory factor for plotting",
         choices = c()
       ),
-      shiny::selectInput(ns("family_factSel"), "Select categories for the explanatory factor",
+      shiny::selectInput(ns("family_factSel"), "Select categories for the explanatory factor (all by default)",
         choices = c(), multiple = TRUE
       ),
-      shiny::selectInput(ns("family_families"), "Select families to study",
+      shiny::selectInput(ns("family_families"), "Select families to plot (all by default)",
         choices = c(), multiple = TRUE
       ),
       shiny::div(

@@ -32,13 +32,13 @@ mod_boxplot_ui <- function(id){
       ),
       shiny::radioButtons(ns("boxplot_type_fact"), "Subset species per...",
         choices = c(
-          "... station characteristics" = "unitobs",
-          "... species characteristics" = "refesp")
+          "... station characteristic" = "unitobs",
+          "... species characteristic" = "refesp")
       ),
       shiny::selectInput(ns("boxplot_factGraph"), "Select the factor for the graphic separation",
         choices = c()
       ),
-      shiny::selectInput(ns("boxplot_factGraphSel"), "Select categories of the factor for the  graphic separation",
+      shiny::selectInput(ns("boxplot_factGraphSel"), "Select categories of the factor for the  graphic separation (all by default)",
         choices = c(), multiple = TRUE
       ),
       shiny::selectInput(ns("boxplot_listFact"), "Select explanatory factor(s) for plotting",
@@ -117,7 +117,7 @@ mod_boxplot_server <- function(id, load_file){
           } else{
             shiny::updateRadioButtons(inputId = "boxplot_metric_table",
               choices = c(
-                "... / station / species / size class" = "unitSpSz",
+                "... / station / species / size classe" = "unitSpSz",
                 "... / station / species" = "unitSp"),
               selected = "unitSp"
             )
@@ -125,7 +125,7 @@ mod_boxplot_server <- function(id, load_file){
           shiny::updateRadioButtons(inputId = "boxplot_type_fact",
             label = "Generate one plot per...",
             choices = c(
-              "... station characteristics" = "unitobs",
+              "... station characteristic" = "unitobs",
               "... species characteristic" = "refesp"),
             selected = "refesp"
           )
@@ -140,7 +140,7 @@ mod_boxplot_server <- function(id, load_file){
           } else{
             shiny::updateRadioButtons(inputId = "boxplot_metric_table",
               choices = c(
-                "... / station / size class" = "unitSpSz",
+                "... / station / size classe" = "unitSpSz",
                 "... / station" = "unitSp",
                 "... of biodiversity (/ station)" = "unit"),
               selected = "unitSp"
@@ -160,7 +160,7 @@ mod_boxplot_server <- function(id, load_file){
         paste("boxplot_listFactSel_", i, sep = "")
       })
       labels_input <- sapply(1:nb_input, function(i){
-        paste("Choose categories for ", input$boxplot_listFact[i], sep = "")
+        paste("Choose categories for ", input$boxplot_listFact[i], " (all by default)", sep = "")
       })
       output_listFactSel <- shiny::tagList()
       if (nb_input > 0){

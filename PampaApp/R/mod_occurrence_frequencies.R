@@ -11,8 +11,8 @@ mod_occurrence_frequencies_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
-      shiny::h3("Occurence frequencies", align = "center"),
-      shiny::h5("One value per combination of factor level", align = "center"),
+      shiny::h3("Occurrence frequencies", align = "center"),
+      shiny::h5("One value per combination of factor levels", align = "center"),
       shiny::br(),
       shinyWidgets::radioGroupButtons(ns("occurrence_aggregation"), "Choose an aggregation",
         choices = c(
@@ -27,13 +27,13 @@ mod_occurrence_frequencies_ui <- function(id){
       shiny::br(),
       shiny::radioButtons(ns("occurrence_type_fact"), "Subset species per...",
         choices = c(
-          "... station characteristics" = "unitobs",
-          "... species characteristics" = "refesp")
+          "... station characteristic" = "unitobs",
+          "... species characteristic" = "refesp")
       ),
       shiny::selectInput(ns("occurrence_factGraph"), "Select the factor for the graphic separation",
         choices = c()
       ),
-      shiny::selectInput(ns("occurrence_factGraphSel"), "Select categories of the factor for the  graphic separation",
+      shiny::selectInput(ns("occurrence_factGraphSel"), "Select categories of the factor for the  graphic separation (all by default)",
         choices = c(), multiple = TRUE
       ),
       shiny::selectInput(ns("occurrence_listFact"), "Select explanatory factor(s) for plotting",
@@ -123,7 +123,7 @@ mod_occurrence_frequencies_server <- function(id, load_file){
           shiny::updateRadioButtons(inputId = "occurrence_type_fact",
             label = "Generate one plot per...",
             choices = c(
-              "... station characteristics" = "unitobs",
+              "... station characteristic" = "unitobs",
               "... species characteristic" = "refesp"),
             selected = "refesp"
           )
@@ -158,7 +158,7 @@ mod_occurrence_frequencies_server <- function(id, load_file){
         paste("occurrence_listFactSel_", i, sep = "")
       })
       labels_input <- sapply(1:nb_input, function(i){
-        paste("Choose categories for ", input$occurrence_listFact[i], sep = "")
+        paste("Choose categories for ", input$occurrence_listFact[i], " (all by default)", sep = "")
       })
       output_listFactSel <- shiny::tagList()
       if (nb_input > 0){

@@ -118,7 +118,7 @@ mod_load_files_server <- function(id){
       output$obs_table <- shiny::renderDataTable(data$obs)
       shiny::removeModal()
       shiny::showModal(shiny::modalDialog(
-        paste("Additionnal files availaible at", get("filePathes", envir = .GlobalEnv)["results"] ),
+        paste("Additional files availaible at", get("filePathes", envir = .GlobalEnv)["results"] ),
         easyClose = TRUE
       ))
     })

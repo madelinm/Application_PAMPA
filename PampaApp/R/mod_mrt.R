@@ -31,13 +31,13 @@ mod_mrt_ui <- function(id){
       ),
       shiny::radioButtons(ns("mrt_type_fact"), "Subset species per...",
         choices = c(
-          "... station characteristics" = "unitobs",
-          "... species characteristics" = "refesp")
+          "... station characteristic" = "unitobs",
+          "... species characteristic" = "refesp")
       ),
       shiny::selectInput(ns("mrt_factGraph"), "Select the factor for the graphic separation",
         choices = c()
       ),
-      shiny::selectInput(ns("mrt_factGraphSel"), "Select categories of the factor for the graphic separation",
+      shiny::selectInput(ns("mrt_factGraphSel"), "Select categories of the factor for the graphic separation (all by default)",
         choices = c(), multiple = TRUE
       ),
       shiny::selectInput(ns("mrt_listFact"), "Select explanatory factors(s) for plotting",
@@ -49,7 +49,7 @@ mod_mrt_ui <- function(id){
         align = "center"
       ),
       shiny::div(
-        mod_plot_options_ui("plot_options_7"),
+        mod_plot_options_ui("plot_options_6"),
         align = "center"
       )
     ),
@@ -123,8 +123,8 @@ mod_mrt_server <- function(id, load_file){
           shiny::updateRadioButtons(inputId = "mrt_type_fact",
             label = "Generate one plot per...",
             choices = c(
-              "... station characteristics" = "unitobs",
-              "... species characteristics" = "refesp"),
+              "... station characteristic" = "unitobs",
+              "... species characteristic" = "refesp"),
             selected = "refesp"
           )
         } else{
@@ -158,7 +158,7 @@ mod_mrt_server <- function(id, load_file){
         paste("mrt_listFactSel_", i, sep = "")
       })
       labels_input <- sapply(1:nb_input, function(i){
-        paste("Choose categories for ", input$mrt_listFact[i], sep = "")
+        paste("Choose categories for ", input$mrt_listFact[i], " (all by default)", sep = "")
       })
       output_listFactSel <- shiny::tagList()
       if (nb_input > 0){
