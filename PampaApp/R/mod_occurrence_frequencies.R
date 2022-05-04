@@ -186,14 +186,19 @@ mod_occurrence_frequencies_server <- function(id, load_file){
     shiny::observeEvent(
       {
         input$occurrence_type_fact
+        input$occurrence_aggregation
         load_file()
       }, {
         if (load_file() != 0){
           choices <- switch(input$occurrence_type_fact,
             "unitobs" = PAMPA:::UnitobsFields.aliases(dataEnv = .GlobalEnv, ordered = TRUE,
               tableMetrique = metric_table),
-            "refesp" = PAMPA:::spRefFields.aliases(site = getOption("P.MPA"), dataEnv = .GlobalEnv,
-              ordered = TRUE, tableMetrique = metric_table)
+            "refesp" = if(input$occurrence_aggregation == "espece"){
+                c(species.code = "species.code", scient.name = "scient.name")
+              } else{
+                PAMPA:::spRefFields.aliases(site = getOption("P.MPA"), dataEnv = .GlobalEnv,
+                  ordered = TRUE, tableMetrique = metric_table)
+              }
           )
           shiny::updateSelectInput(inputId = "occurrence_factGraph", choices = c("", NA, choices))
         }
