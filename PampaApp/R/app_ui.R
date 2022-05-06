@@ -65,6 +65,11 @@ app_ui <- function(request) {
             mod_maps_symbols_ui("maps_symbols_1")
           )
         ),
+        shiny::tabPanel("With coloured polygons",
+          shiny::fluidPage(
+            mod_maps_colours_ui("maps_colours_1")
+          )
+        )
       ),
       shiny::tabPanel("Options",
         shiny::fluidPage(
