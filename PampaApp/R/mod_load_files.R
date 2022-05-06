@@ -142,7 +142,7 @@ mod_load_files_server <- function(id){
       unitobs_file <- reactives$unitobs
       refesp_file <- reactives$refesp
       local_refesp_file <- reactives$loc_refesp
-      refspa_file <- if(!is.null(reactives$refspa)) paste(ws, "Maps", reactives$refspa, sep = "/") else NULL
+      refspa_file <- if(!is.null(reactives$refspa)) paste(ws, "Maps/", reactives$refspa, sep = "") else NULL
 
       path <- c(unitobs = unitobs_file, obs = obs_file, refesp =  refesp_file, locrefesp = local_refesp_file, refspa = refspa_file, ws = ws)
       data <- PAMPA::load_files.f(path, dminMax = input$load_dmin, .GlobalEnv, .GlobalEnv)

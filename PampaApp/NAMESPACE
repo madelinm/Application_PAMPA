@@ -2,6 +2,7 @@
 
 export(run_app)
 import(fs)
+import(leaflet)
 import(shiny)
 import(shinyFiles)
 import(shinyWidgets)

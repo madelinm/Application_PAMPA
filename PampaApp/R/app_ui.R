@@ -59,6 +59,13 @@ app_ui <- function(request) {
           )
         )
       ),
+      shiny::navbarMenu("Maps",
+        shiny::tabPanel("With symbols",
+          shiny::fluidPage(
+            mod_maps_symbols_ui("maps_symbols_1")
+          )
+        ),
+      ),
       shiny::tabPanel("Options",
         shiny::fluidPage(
           mod_plot_options_ui("plot_options_1")
