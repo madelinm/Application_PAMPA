@@ -25,6 +25,8 @@ app_server <- function(input, output, session) {
   mod_family_frequencies_options_server("family_frequencies_options_1")
   mod_plot_options_server("plot_options_5")
 
+  mod_linear_model_server("linear_model_1", load_file)
+
   mod_mrt_server("mrt_1", load_file)
   mod_plot_options_server("plot_options_6")
 

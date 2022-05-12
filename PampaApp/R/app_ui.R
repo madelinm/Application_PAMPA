@@ -53,6 +53,11 @@ app_ui <- function(request) {
         )
       ),
       shiny::navbarMenu("Stats",
+        shiny::tabPanel("Linear models",
+          shiny::fluidPage(
+            mod_linear_model_ui("linear_model_1")
+          )
+        ),
         shiny::tabPanel("Multivariate Regression Trees",
           shiny::fluidPage(
             mod_mrt_ui("mrt_1")
