@@ -39,57 +39,58 @@ mod_boxplot_options_server <- function(id){
 
     shiny::observeEvent(input$boxplot_options, {
       shiny::showModal(shiny::modalDialog(
-        shiny::column(width = 6,
-          shiny::checkboxInput(ns("boxplot_options_max_exclu"), "Do not display extreme values",
-            value = getOption("P.maxExclu")
+        shiny::fluidRow(
+          shiny::column(width = 6,
+            shiny::checkboxInput(ns("boxplot_options_max_exclu"), "Do not display extreme values",
+              value = getOption("P.maxExclu")
+            ),
+            shiny::div(
+              shiny::numericInput(ns("boxplot_options_prop_max"), "(greater than ... x the max value)?",
+                value = getOption("P.GraphPartMax"), step = 0.05),
+              style = "margin-left:25px;"
+            ),
+            shiny::checkboxInput(ns("boxplot_options_nb_obs"), "Display the number of records per box?",
+              value = getOption("P.NbObs")),
+            shiny::div(
+              colourpicker::colourInput(ns("boxplot_options_nb_obs_col"), "Colour of record numbers:",
+                value = getOption("P.NbObsCol"), showColour = "background"),
+              style = "margin-left:25px;"
+            ),
+            shiny::checkboxInput(ns("boxplot_options_warnings"), "Display warnings? (low number + excluded max)",
+              value = getOption("P.warnings")),
+            shiny::checkboxInput(ns("boxplot_options_group_sep"), "Display group separator (first level factor)?",
+              value = getOption("P.sepGroupes")),
+            shiny::div(
+              colourpicker::colourInput(ns("boxplot_options_group_sep_col"), "Colour for separators:",
+                value = getOption("P.sepGroupesCol"), showColour = "background"),
+              style = "margin-left:25px;"
+            ),
           ),
-          shiny::div(
-            shiny::numericInput(ns("boxplot_options_prop_max"), "(greater than ... x the max value)?",
-              value = getOption("P.GraphPartMax"), step = 0.05),
-            style = "margin-left:25px;"
-          ),
-          shiny::checkboxInput(ns("boxplot_options_nb_obs"), "Display the number of records per box?",
-            value = getOption("P.NbObs")),
-          shiny::div(
-            colourpicker::colourInput(ns("boxplot_options_nb_obs_col"), "Colour of record numbers:",
-              value = getOption("P.NbObsCol"), showColour = "background"),
-            style = "margin-left:25px;"
-          ),
-          shiny::checkboxInput(ns("boxplot_options_warnings"), "Display warnings? (low number + excluded max)",
-            value = getOption("P.warnings")),
-          shiny::checkboxInput(ns("boxplot_options_group_sep"), "Display group separator (first level factor)?",
-            value = getOption("P.sepGroupes")),
-          shiny::div(
-            colourpicker::colourInput(ns("boxplot_options_group_sep_col"), "Colour for separators:",
-              value = getOption("P.sepGroupesCol"), showColour = "background"),
-            style = "margin-left:25px;"
-          ),
-        ),
-        shiny::column(width = 6, style = "border-left: 1px solid",
-          shiny::checkboxInput(ns("boxplot_options_colour_legend"), "Display colour legend (second level factor)?",
-            value = getOption("P.legendeCouleurs")),
-          shiny::checkboxInput(ns("boxplot_options_mean_pts"), "Display the means (points) on the boxes?",
-            value = getOption("P.pointMoyenne")),
-          shiny::div(
-            colourpicker::colourInput(ns("boxplot_options_mean_pts_col"), "Colour of points:",
-              value = getOption("P.pointMoyenneCol"), showColour = "background"),
-            shiny::numericInput(ns("boxplot_options_mean_pts_cex"), "Point size multiplier:",
-              value = getOption("P.pointMoyenneCex")),
-            shiny::numericInput(ns("boxplot_options_mean_pts_type"), "Point type:",
-              value = getOption("P.pointMoyennePch")),
-            style = "margin-left:25px;"
-          ),
-          shiny::checkboxInput(ns("boxplot_options_mean_val"), "Display the mean values on the boxplots?",
-            value = getOption("P.valMoyenne")),
-          shiny::div(
-            colourpicker::colourInput(ns("boxplot_options_mean_val_col"), "Colour for mean values:",
-              value = getOption("P.valMoyenneCol"), showColour = "background"),
-            shiny::numericInput(ns("boxplot_options_nb_decimal"), "Number of decimals:",
-              value = getOption("P.NbDecimal"), width = "50%"),
-            style = "margin-left:25px;"
+          shiny::column(width = 6, style = "border-left: 1px solid",
+            shiny::checkboxInput(ns("boxplot_options_colour_legend"), "Display colour legend (second level factor)?",
+              value = getOption("P.legendeCouleurs")),
+            shiny::checkboxInput(ns("boxplot_options_mean_pts"), "Display the means (points) on the boxes?",
+              value = getOption("P.pointMoyenne")),
+            shiny::div(
+              colourpicker::colourInput(ns("boxplot_options_mean_pts_col"), "Colour of points:",
+                value = getOption("P.pointMoyenneCol"), showColour = "background"),
+              shiny::numericInput(ns("boxplot_options_mean_pts_cex"), "Point size multiplier:",
+                value = getOption("P.pointMoyenneCex")),
+              shiny::numericInput(ns("boxplot_options_mean_pts_type"), "Point type:",
+                value = getOption("P.pointMoyennePch")),
+              style = "margin-left:25px;"
+            ),
+            shiny::checkboxInput(ns("boxplot_options_mean_val"), "Display the mean values on the boxplots?",
+              value = getOption("P.valMoyenne")),
+            shiny::div(
+              colourpicker::colourInput(ns("boxplot_options_mean_val_col"), "Colour for mean values:",
+                value = getOption("P.valMoyenneCol"), showColour = "background"),
+              shiny::numericInput(ns("boxplot_options_nb_decimal"), "Number of decimals:",
+                value = getOption("P.NbDecimal"), width = "50%"),
+              style = "margin-left:25px;"
+            )
           )
         ),
-        shiny::HTML("bla bla bla"),
         title = "Boxplot options",
         footer = shiny::tagList(
           shiny::actionButton(ns("boxplot_options_ok"), "Ok"),

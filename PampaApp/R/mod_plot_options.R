@@ -39,59 +39,58 @@ mod_plot_options_server <- function(id){
 
     shiny::observeEvent(input$plot_options, {
       shiny::showModal(shiny::modalDialog(
-        shiny::column(width = 6,
-          shiny::h4("Graphics look :"),
-          shiny::selectInput(ns("plot_options_colour"), "Colour palette",
-            choices = c("default", "blue", "heat", "grey", "map1", "map2", "topo"),
-            selected = getOption("P.colPalette")
-          ),
-          shiny::selectInput(ns("plot_options_language"), "Language for axis labels",
-            choices = c("en", "fr"),
-            selected = getOption("P.lang")
-          ),
-          shiny::checkboxInput(ns("plot_options_publication"),
-            "Simplified graphics for publishing (smaller, no title)",
-            value = getOption("P.graphPaper")),
-          shiny::checkboxInput(ns("plot_options_title"), "Graphics with titles?",
-            value = getOption("P.title")),
-          shiny::checkboxInput(ns("plot_options_axes"), "Display axes labels?",
-            value = getOption("P.axesLabels")),
-          shiny::numericInput(ns("plot_options_text_size"), "Text size multiplier:",
-            value = getOption("P.cex")),
-          shiny::numericInput(ns("plot_options_min_observation"),
-            "Do not produce graphics with less than ... observations",
-            value = getOption("P.MinNbObs")),
-        ),
-        shiny::column(width = 6, style = "border-left: 1px solid",
-          shiny::h4("Output options :"),
-#          shiny::checkboxInput(ns("plot_options_pdf"), "PDF files?",
-#            value = getOption("P.graphPDF")),
-          shiny::h5("Options for pdf files:"),
-          shiny::div(
-            shiny::checkboxInput(ns("plot_options_one_file_page"), "One file per page (PDF)?",
-              value = getOption("P.PDFunFichierPage")),
-            shiny::checkboxInput(ns("plot_options_embed_fonts"), "Embed fonts in PDF?",
-              value = getOption("P.pdfEmbedFonts")),
-            style = "margin-left:25px;"
-          ),
-#          shiny::checkboxInput(ns("plot_options_png"), "PNG files?",
-#            value = getOption("P.graphPNG")),
-#          shiny::checkboxInput(ns("plot_options_wmf"), "WMF files? (+ displayed on screen; Windows only)",
-#            value = getOption("P.graphWMF")),
-          shiny::checkboxInput(ns("plot_options_multiple_graphics_page"), "Multiple graphics per page",
-            value = getOption("P.plusieursGraphPage")),
+        shiny::fluidRow(
           shiny::column(width = 6,
-            shiny::selectInput(ns("plot_options_nrow_graph"), "Number of graphics per rows",
-              choices = c(1, 2, 3), selected = getOption("P.nrowGraph"))
+            shiny::h4("Graphics look :"),
+            shiny::selectInput(ns("plot_options_colour"), "Colour palette",
+              choices = c("default", "blue", "heat", "grey", "map1", "map2", "topo"),
+              selected = getOption("P.colPalette")
+            ),
+            shiny::selectInput(ns("plot_options_language"), "Language for axis labels",
+              choices = c("en", "fr"),
+              selected = getOption("P.lang")
+            ),
+            shiny::checkboxInput(ns("plot_options_publication"),
+              "Simplified graphics for publishing (smaller, no title)",
+              value = getOption("P.graphPaper")),
+            shiny::checkboxInput(ns("plot_options_title"), "Graphics with titles?",
+              value = getOption("P.title")),
+            shiny::checkboxInput(ns("plot_options_axes"), "Display axes labels?",
+              value = getOption("P.axesLabels")),
+            shiny::numericInput(ns("plot_options_text_size"), "Text size multiplier:",
+              value = getOption("P.cex")),
+            shiny::numericInput(ns("plot_options_min_observation"),
+              "Do not produce graphics with less than ... observations",
+              value = getOption("P.MinNbObs")),
           ),
-          shiny::column(width = 6,
-            shiny::selectInput(ns("plot_options_ncol_graph"), "Number of graphics per columns",
-              choices = c(1, 2, 3), selected = getOption("P.ncolGraph"))
-          ),
+          shiny::column(width = 6, style = "border-left: 1px solid",
+            shiny::h4("Output options :"),
+#            shiny::checkboxInput(ns("plot_options_pdf"), "PDF files?",
+#              value = getOption("P.graphPDF")),
+            shiny::h5("Options for pdf files:"),
+            shiny::div(
+              shiny::checkboxInput(ns("plot_options_one_file_page"), "One file per page (PDF)?",
+                value = getOption("P.PDFunFichierPage")),
+              shiny::checkboxInput(ns("plot_options_embed_fonts"), "Embed fonts in PDF?",
+                value = getOption("P.pdfEmbedFonts")),
+              style = "margin-left:25px;"
+            ),
+#            shiny::checkboxInput(ns("plot_options_png"), "PNG files?",
+#              value = getOption("P.graphPNG")),
+#            shiny::checkboxInput(ns("plot_options_wmf"), "WMF files? (+ displayed on screen; Windows only)",
+#              value = getOption("P.graphWMF")),
+            shiny::checkboxInput(ns("plot_options_multiple_graphics_page"), "Multiple graphics per page",
+              value = getOption("P.plusieursGraphPage")),
+            shiny::column(width = 6,
+              shiny::selectInput(ns("plot_options_nrow_graph"), "Number of graphics per rows",
+                choices = c(1, 2, 3), selected = getOption("P.nrowGraph"))
+            ),
+            shiny::column(width = 6,
+              shiny::selectInput(ns("plot_options_ncol_graph"), "Number of graphics per columns",
+                choices = c(1, 2, 3), selected = getOption("P.ncolGraph"))
+            ),
+          )
         ),
-        shiny::HTML("1. bla bla bla<br/>2. bla bla bla<br/>3. bla bla bla<br/>4. bla bla bla<br/>
-          5. bla bla bla<br/>6. bla bla bla<br/>7. bla bla bla<br/>8. bla bla bla<br/>
-          9. bla bla bla<br/>10. bla bla bla"),
         title = "Common graphical options",
         footer = shiny::tagList(
           shiny::actionButton(ns("plot_options_ok"), "OK"),
