@@ -148,6 +148,7 @@ mod_load_files_server <- function(id){
       data <- PAMPA::load_files.f(path, dminMax = input$load_dmin, .GlobalEnv, .GlobalEnv)
 
       output$obs_table <- shiny::renderDataTable(data$obs)
+      reactives$list_filters <- "None"
       shiny::removeModal()
       shiny::showModal(shiny::modalDialog(
         paste("Additional files availaible at", get("filePathes", envir = .GlobalEnv)["results"] ),

@@ -77,7 +77,7 @@ mod_mrt_server <- function(id, load_file){
         length(input$mrt_factGraphSel)
       } else{
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = input$mrt_metric_table,
-          facts = input$boxplot_factGraph, selections = append(list(NA), NA),
+          facts = input$mrt_factGraph, selections = append(list(NA), NA),
           metrique = input$mrt_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$mrt_factGraph])
         sel <- as.character(sel)
