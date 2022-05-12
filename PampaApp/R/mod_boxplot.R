@@ -117,7 +117,7 @@ mod_boxplot_server <- function(id, load_file){
           } else{
             shiny::updateRadioButtons(inputId = "boxplot_metric_table",
               choices = c(
-                "... / station / species / size classe" = "unitSpSz",
+                "... / station / species / size class" = "unitSpSz",
                 "... / station / species" = "unitSp"),
               selected = "unitSp"
             )
@@ -140,7 +140,7 @@ mod_boxplot_server <- function(id, load_file){
           } else{
             shiny::updateRadioButtons(inputId = "boxplot_metric_table",
               choices = c(
-                "... / station / size classe" = "unitSpSz",
+                "... / station / size class" = "unitSpSz",
                 "... / station" = "unitSp",
                 "... of biodiversity (/ station)" = "unit"),
               selected = "unitSp"
@@ -272,14 +272,11 @@ mod_boxplot_server <- function(id, load_file){
 
     shiny::observeEvent(input$boxplot_save_graphics, {
       shiny::showModal(shiny::modalDialog(
-        shiny::h4("Choose the format for the file:"),
-        div(
-          shiny::checkboxInput(ns("boxplot_format_pdf"), "pdf", value = FALSE),
-          shiny::checkboxInput(ns("boxplot_format_png"), "png", value = FALSE),
-          shiny::checkboxInput(ns("boxplot_format_wmf"), "wmf", value = FALSE),
-          style = "margin-left:25px;"
-        ),
-        shiny::h5(paste("The files will be saved at ", get("filePathes", envir = .GlobalEnv)["results"])),
+        shiny::checkboxGroupInput(ns("boxplot_export_format"), "Choose the format for the file:",
+          choices = c("pdf", "png", "wmf")),
+        shiny::h5("The files will be saved at:"),
+        shiny::code(get("filePathes", envir = .GlobalEnv)["results"],
+          style = "color: #000000; background-color: #ffffff"),
         title = "Save graphics",
         footer = shiny::tagList(
           shiny::actionButton(ns("boxplot_save"), "Save"),
@@ -289,8 +286,8 @@ mod_boxplot_server <- function(id, load_file){
     })
 
     shiny::observeEvent(input$boxplot_save, {
-      if (input$boxplot_format_pdf){
-        setOption("P.graphPDF", input$boxplot_format_pdf)
+      if ("pdf" %in% input$boxplot_export_format){
+        setOption("P.graphPDF", TRUE)
         PAMPA::boxplot_pampa.f(
           agregation = params$aggregation,
           metrique = params$metric,
@@ -303,8 +300,8 @@ mod_boxplot_server <- function(id, load_file){
         )
         setOption("P.graphPDF", FALSE)
       }
-      if (input$boxplot_format_png){
-        setOption("P.graphPNG", input$boxplot_format_png)
+      if ("png" %in% input$boxplot_export_format){
+        setOption("P.graphPNG", TRUE)
         PAMPA::boxplot_pampa.f(
           agregation = params$aggregation,
           metrique = params$metric,
@@ -317,8 +314,8 @@ mod_boxplot_server <- function(id, load_file){
         )
         setOption("P.graphPNG", FALSE)
       }
-      if (input$boxplot_format_wmf){
-        setOption("P.graphWMF", input$boxplot_format_wmf)
+      if ("wmf" %in% input$boxplot_export_format){
+        setOption("P.graphWMF", TRUE)
         PAMPA::boxplot_pampa.f(
           agregation = params$aggregation,
           metrique = params$metric,
