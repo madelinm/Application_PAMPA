@@ -53,7 +53,7 @@ mod_maps_symbols_ui <- function(id){
     ),
     shiny::mainPanel(width = 9,
       shiny::h3("Maps", align = "center"),
-      leaflet::leafletOutput(ns("maps_symbols"), width="100%",height="750px")
+      leaflet::leafletOutput(ns("maps_symbols"), width = "100%", height = "750px")
     )
   )
 }

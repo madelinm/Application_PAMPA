@@ -43,8 +43,6 @@ mod_load_files_ui <- function(id){
         shiny::br(),
         shiny::br()
       ),
-#      shiny::h3("Selection on data", align = "center"),
-#      shiny::br(),
       shinyjs::hidden(
         shiny::div(id = ns("data_selection"),
           shiny::br(),
@@ -61,7 +59,6 @@ mod_load_files_ui <- function(id){
           shiny::strong("Restore initial data"),
           shiny::br(),
           shiny::actionButton(ns("load_restore_data"), "Restore"),
-#          align = "center"
         )
       )
     ),
@@ -151,7 +148,9 @@ mod_load_files_server <- function(id){
       reactives$list_filters <- "None"
       shiny::removeModal()
       shiny::showModal(shiny::modalDialog(
-        paste("Additional files availaible at", get("filePathes", envir = .GlobalEnv)["results"] ),
+        shiny::h5("Additional files availaible at:"),
+        shiny::code(get("filePathes", envir = .GlobalEnv)["results"],
+          style = "color: #000000; background-color: #ffffff"),
         easyClose = TRUE
       ))
     })
