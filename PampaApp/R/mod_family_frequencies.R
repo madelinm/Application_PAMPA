@@ -173,6 +173,61 @@ mod_family_frequencies_server <- function(id, load_file){
       })
       shiny::removeModal()
     })
+
+    shiny::observeEvent(input$family_save_graphics, {
+      shiny::showModal(shiny::modalDialog(
+        shiny::checkboxGroupInput(ns("family_export_format"), "Choose the format for the file:",
+          choices = c("pdf", "png", "wmf")),
+        shiny::h5("The files will be saved at:"),
+        shiny::code(get("filePathes", envir = .GlobalEnv)["results"],
+          style = "color: #000000; background-color: #ffffff"),
+        title = "Save graphics",
+        footer = shiny::tagList(
+          shiny::actionButton(ns("family_save"), "Save"),
+          shiny::modalButton("Cancel")
+        )
+      ))
+    })
+
+    shiny::observeEvent(input$family_save, {
+      if ("pdf" %in% input$family_export_format){
+        setOption("P.graphPDF", TRUE)
+        PAMPA::freq_occurrence_familles.f(
+          factGraph = params$fact_graph,
+          factGraphSel = params$fact_graph_sel[iFact],
+          fact = params$fact,
+          factSel = params$fact_sel,
+          families = params$families,
+          new_window = FALSE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
+        )
+        setOption("P.graphPDF", FALSE)
+      }
+      if ("png" %in% input$family_export_format){
+        setOption("P.graphPNG", TRUE)
+        PAMPA::freq_occurrence_familles.f(
+          factGraph = params$fact_graph,
+          factGraphSel = params$fact_graph_sel[iFact],
+          fact = params$fact,
+          factSel = params$fact_sel,
+          families = params$families,
+          new_window = FALSE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
+        )
+        setOption("P.graphPNG", FALSE)
+      }
+      if ("wmf" %in% input$family_export_format){
+        setOption("P.graphWMF", TRUE)
+        PAMPA::freq_occurrence_familles.f(
+          factGraph = params$fact_graph,
+          factGraphSel = params$fact_graph_sel[iFact],
+          fact = params$fact,
+          factSel = params$fact_sel,
+          families = params$families,
+          new_window = FALSE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
+        )
+        setOption("P.graphWMF", FALSE)
+      }
+      shiny::removeModal()
+    })
   })
 }
 
