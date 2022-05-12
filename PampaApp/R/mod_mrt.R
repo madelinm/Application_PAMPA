@@ -271,13 +271,8 @@ mod_mrt_server <- function(id, load_file){
 
     shiny::observeEvent(input$mrt_save_graphics, {
       shiny::showModal(shiny::modalDialog(
-        shiny::h4("Choose the format for the file:"),
-        div(
-          shiny::checkboxInput(ns("mrt_format_pdf"), "pdf", value = FALSE),
-          shiny::checkboxInput(ns("mrt_format_png"), "png", value = FALSE),
-          shiny::checkboxInput(ns("mrt_format_wmf"), "wmf", value = FALSE),
-          style = "margin-left:25px;"
-        ),
+        shiny::checkboxGroupInput(ns("mrt_export_format"), "Choose the format for the file:",
+          choices = c("pdf", "png", "wmf")),
         shiny::h5(paste("The files will be saved at ", get("filePathes", envir = .GlobalEnv)["results"])),
         title = "Save graphics",
         footer = shiny::tagList(
@@ -288,7 +283,7 @@ mod_mrt_server <- function(id, load_file){
     })
 
     shiny::observeEvent(input$mrt_save, {
-      if (input$mrt_format_pdf){
+      if ("pdf" %in% input$mrt_export_format){
         setOption("P.graphPDF", TRUE)
         PAMPA::mrt.f(
           agregation = params$aggregation,
@@ -302,7 +297,7 @@ mod_mrt_server <- function(id, load_file){
         )
         setOption("P.graphPDF", FALSE)
       }
-      if (input$mrt_format_png){
+      if ("png" %in% input$mrt_export_format){
         setOption("P.graphPNG", TRUE)
         PAMPA::mrt.f(
           agregation = params$aggregation,
@@ -316,7 +311,7 @@ mod_mrt_server <- function(id, load_file){
         )
         setOption("P.graphPNG", FALSE)
       }
-      if (input$mrt_format_wmf){
+      if ("wmf" %in% input$mrt_export_format){
         setOption("P.graphWMF", TRUE)
         PAMPA::mrt.f(
           agregation = params$aggregation,

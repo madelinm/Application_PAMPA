@@ -264,14 +264,11 @@ mod_occurrence_frequencies_server <- function(id, load_file){
 
     shiny::observeEvent(input$occurrence_save_graphics, {
       shiny::showModal(shiny::modalDialog(
-        shiny::h4("Choose the format for the file:"),
-        div(
-          shiny::checkboxInput(ns("occurrence_format_pdf"), "pdf", value = FALSE),
-          shiny::checkboxInput(ns("occurrence_format_png"), "png", value = FALSE),
-          shiny::checkboxInput(ns("occurrence_format_wmf"), "wmf", value = FALSE),
-          style = "margin-left:25px;"
-        ),
-        shiny::h5(paste("The files will be saved at ", get("filePathes", envir = .GlobalEnv)["results"])),
+        shiny::checkboxGroupInput(ns("occurrence_export_format"), "Choose the format for the file:",
+          choices = c("pdf", "png", "wmf")),
+        shiny::h5("The files will be saved at "),
+        shiny::code(get("filePathes", envir = .GlobalEnv)["results"],
+          style = "color: #000000; background-color: #ffffff"),
         title = "Save graphics",
         footer = shiny::tagList(
           shiny::actionButton(ns("occurrence_save"), "Save"),
@@ -281,36 +278,36 @@ mod_occurrence_frequencies_server <- function(id, load_file){
     })
 
     shiny::observeEvent(input$occurrence_save, {
-      if (input$occurrence_format_pdf){
-        setOption("P.graphPDF", input$occurrence_format_pdf)
+      if ("pdf" %in% input$occurrence_export_format){
+        setOption("P.graphPDF", TRUE)
         PAMPA::freq_occurrence.f(
           agregation = params$aggregation,
           factGraph = params$fact_graph,
-          factGraphSel = params$fact_graph_sel,
+          factGraphSel = params$fact_graph_sel[iFact],
           listFact = params$list_fact,
           listFactSel = params$list_fact_sel,
           new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
         )
         setOption("P.graphPDF", FALSE)
       }
-      if (input$occurrence_format_png){
-        setOption("P.graphPNG", input$occurrence_format_png)
+      if ("png" %in% input$occurrence_export_format){
+        setOption("P.graphPNG", TRUE)
         PAMPA::freq_occurrence.f(
           agregation = params$aggregation,
           factGraph = params$fact_graph,
-          factGraphSel = params$fact_graph_sel,
+          factGraphSel = params$fact_graph_sel[iFact],
           listFact = params$list_fact,
           listFactSel = params$list_fact_sel,
           new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
         )
         setOption("P.graphPNG", FALSE)
       }
-      if (input$occurrence_format_wmf){
-        setOption("P.graphWMF", input$occurrence_format_wmf)
+      if ("wmf" %in% input$occurrence_export_format){
+        setOption("P.graphWMF", TRUE)
         PAMPA::freq_occurrence.f(
           agregation = params$aggregation,
           factGraph = params$fact_graph,
-          factGraphSel = params$fact_graph_sel,
+          factGraphSel = params$fact_graph_sel[iFact],
           listFact = params$list_fact,
           listFactSel = params$list_fact_sel,
           new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
