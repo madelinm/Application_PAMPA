@@ -74,6 +74,11 @@ app_ui <- function(request) {
           shiny::fluidPage(
             mod_maps_colours_ui("maps_colours_1")
           )
+        ),
+        shiny::tabPanel("With boxplots",
+          shiny::fluidPage(
+            mod_maps_boxplots_ui("maps_boxplots_1")
+          )
         )
       ),
       shiny::tabPanel("Options",

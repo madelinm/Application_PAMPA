@@ -3,6 +3,7 @@
 export(run_app)
 import(fs)
 import(leaflet)
+import(mapview)
 import(shiny)
 import(shinyFiles)
 import(shinyWidgets)
