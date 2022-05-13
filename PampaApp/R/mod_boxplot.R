@@ -248,7 +248,7 @@ mod_boxplot_server <- function(id, load_file){
         if (!is.null(input[[id]])) input[[id]] else NA
       })
 
-      if (params$aggregation == "especes"){
+      if (params$aggregation == "espece"){
         output$graph_boxplot <- shiny::renderUI({
           lapply(1:isolate(length_factGraphSel()), function(iFact){
             id <- paste("boxplot_", iFact, sep = "")
