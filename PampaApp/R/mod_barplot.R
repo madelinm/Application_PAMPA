@@ -104,6 +104,11 @@ mod_barplot_server <- function(id, load_file){
         "unitobs" = "barplot.unitobs")
     )
 
+    shiny::observeEvent(load_file(), {
+      shinyjs::reset(id = "barplot_factGraphSel")
+      output$graph_barplot <- NULL
+    })
+
     shiny::observeEvent({
         input$barplot_aggregation
         load_file()

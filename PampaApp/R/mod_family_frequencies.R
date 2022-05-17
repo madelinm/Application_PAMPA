@@ -80,6 +80,11 @@ mod_family_frequencies_server <- function(id, load_file){
     next_step = "freq_occurrence"
 
     shiny::observeEvent(load_file(), {
+      shinyjs::reset(id = "family_factGraphSel")
+      output$family <- NULL
+    })
+
+    shiny::observeEvent(load_file(), {
       if (load_file() != 0){
         choices <- PAMPA:::UnitobsFields.aliases(dataEnv = .GlobalEnv, ordered = TRUE,
           tableMetrique = metric_table)
@@ -106,14 +111,18 @@ mod_family_frequencies_server <- function(id, load_file){
       }
     })
 
-    shiny::observeEvent(input$family_fact, {
-      if (input$family_fact != "" & input$family_fact != "NA"){
-        choices <- unique(PAMPA:::selectModalites.f(tableMetrique = metric_table,
-          facts = input$family_fact, selections = append(list(NA), NA), metrique = metric,
-          nextStep = next_step, dataEnv = .GlobalEnv, level = 1)[, input$family_fact])
-        choices <- sort(as.character(choices))
-        shiny::updateSelectInput(inputId = "family_factSel", choices = c("", choices))
-      }
+    shiny::observeEvent(
+      {
+        input$family_fact
+        load_file()
+      }, {
+        if (input$family_fact != "" & input$family_fact != "NA"){
+          choices <- unique(PAMPA:::selectModalites.f(tableMetrique = metric_table,
+            facts = input$family_fact, selections = append(list(NA), NA), metrique = metric,
+            nextStep = next_step, dataEnv = .GlobalEnv, level = 1)[, input$family_fact])
+          choices <- sort(as.character(choices))
+          shiny::updateSelectInput(inputId = "family_factSel", choices = c("", choices))
+        }
     })
 
     shiny::observeEvent(load_file(), {

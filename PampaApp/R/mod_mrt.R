@@ -102,6 +102,11 @@ mod_mrt_server <- function(id, load_file){
         "unitobs" = "MRT.unitobs")
     )
 
+    shiny::observeEvent(load_file(), {
+      shinyjs::reset(id = "mrt_factGraphSel")
+      output$stats_mrt <- NULL
+    })
+
     shiny::observeEvent({
         input$mrt_aggregation
         load_file()

@@ -96,6 +96,10 @@ mod_linear_model_server <- function(id, load_file){
         "unitobs" = "modele_lineaire.unitobs")
     )
 
+    shiny::observeEvent(load_file(), {
+      shinyjs::reset(id = "linear_model_factGraphSel")
+    })
+
     shiny::observeEvent({
         input$linear_model_aggregation
         load_file()

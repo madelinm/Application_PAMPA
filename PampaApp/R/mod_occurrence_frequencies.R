@@ -102,6 +102,11 @@ mod_occurrence_frequencies_server <- function(id, load_file){
         "unitobs" = "freq_occurrence.unitobs")
     )
 
+    observeEvent(load_file(), {
+      shinyjs::reset(id = "occurrence_factGraphSel")
+      output$graph_occurrence <- NULL
+    })
+
     shiny::observeEvent({
         input$occurrence_aggregation
         load_file()

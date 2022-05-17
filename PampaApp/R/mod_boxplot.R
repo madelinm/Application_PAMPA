@@ -104,6 +104,11 @@ mod_boxplot_server <- function(id, load_file){
         "unitobs" = "boxplot.unitobs")
     )
 
+    shiny::observeEvent(load_file(), {
+      shinyjs::reset(id = "boxplot_factGraphSel")
+      output$graph_boxplot <- NULL
+    })
+
     shiny::observeEvent({
         input$boxplot_aggregation
         load_file()
