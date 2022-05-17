@@ -50,7 +50,7 @@ mod_linear_model_ui <- function(id){
     ),
     shiny::mainPanel(width = 9,
       shiny::h3("Graphics", align = "center"),
-      shiny::uiOutput(ns("linear_model"))
+      shiny::uiOutput(ns("stats_linear_model"))
     )
   )
 }
@@ -240,9 +240,29 @@ mod_linear_model_server <- function(id, load_file){
         if (!is.null(input[[id]])) input[[id]] else NA
       })
 
-      output$linear_model <- shiny::renderUI({
-        lapply(1:isolate(length_factGraphSel()), function(iFact){
-          id <- paste("linear_model_", iFact, sep = "")
+      if (params$aggregation == "espece"){
+        output$stats_linear_model <- shiny::renderUI({
+          lapply(1:isolate(length_factGraphSel()), function(iFact){
+            id <- paste("linear_model_", iFact, sep = "")
+            shiny::plotOutput(outputId = id)
+
+            output[[id]] <- shiny::renderPlot({
+              PAMPA::lm.f(
+                agregation = params$aggregation,
+                metrique = params$metric,
+                factAna = params$fact_graph,
+                factAnaSel = params$fact_graph_sel[iFact],
+                listFact = params$list_fact,
+                listFactSel = params$list_fact_sel,
+                tableMetrique = params$metric_table,
+                dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
+              )
+            })
+          })
+        })
+      } else{
+        output$stats_linear_model <- shiny::renderUI({
+          id <- "linear_model"
           shiny::plotOutput(outputId = id)
 
           output[[id]] <- shiny::renderPlot({
@@ -250,7 +270,7 @@ mod_linear_model_server <- function(id, load_file){
               agregation = params$aggregation,
               metrique = params$metric,
               factAna = params$fact_graph,
-              factAnaSel = params$fact_graph_sel[iFact],
+              factAnaSel = params$fact_graph_sel,
               listFact = params$list_fact,
               listFactSel = params$list_fact_sel,
               tableMetrique = params$metric_table,
@@ -258,7 +278,7 @@ mod_linear_model_server <- function(id, load_file){
             )
           })
         })
-      })
+      }
       shiny::removeModal()
     })
   })

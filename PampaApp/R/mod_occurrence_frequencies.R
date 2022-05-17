@@ -53,7 +53,7 @@ mod_occurrence_frequencies_ui <- function(id){
     shiny::mainPanel(width = 9,
       shiny::h3("Graphics", align = "center"),
       shiny::actionButton(ns("occurrence_save_graphics"), "Save graphics"),
-      shiny::uiOutput(ns("occurrence"))
+      shiny::uiOutput(ns("graph_occurrence"))
     )
   )
 }
@@ -242,23 +242,41 @@ mod_occurrence_frequencies_server <- function(id, load_file){
         if (!is.null(input[[id]])) input[[id]] else NA
       })
 
-      output$occurrence <- shiny::renderUI({
-        lapply(1:isolate(length_factGraphSel()), function(iFact){
-          id <- paste("occurrence_", iFact, sep = "")
+      if (params$aggregation == "espece"){
+        output$graph_occurrence <- shiny::renderUI({
+          lapply(1:isolate(length_factGraphSel()), function(iFact){
+            id <- paste("occurrence_", iFact, sep = "")
+            shiny::plotOutput(outputId = id)
+
+            output[[id]] <- shiny::renderPlot({
+              PAMPA::freq_occurrence.f(
+                agregation = params$aggregation,
+                factGraph = params$fact_graph,
+                factGraphSel = params$fact_graph_sel[iFact],
+                listFact = params$list_fact,
+                listFactSel = params$list_fact_sel,
+                new_window = FALSE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
+              )
+            })
+          })
+        })
+      } else{
+        output$graph_occurrence <- shiny::renderUI({
+          id <- "occurrence"
           shiny::plotOutput(outputId = id)
 
           output[[id]] <- shiny::renderPlot({
             PAMPA::freq_occurrence.f(
               agregation = params$aggregation,
               factGraph = params$fact_graph,
-              factGraphSel = params$fact_graph_sel[iFact],
+              factGraphSel = params$fact_graph_sel,
               listFact = params$list_fact,
               listFactSel = params$list_fact_sel,
               new_window = FALSE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
             )
           })
         })
-      })
+      }
       shiny::removeModal()
     })
 
