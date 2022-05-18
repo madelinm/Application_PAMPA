@@ -77,7 +77,7 @@ mod_occurrence_frequencies_server <- function(id, load_file){
           facts = input$occurrence_factGraph, selections = append(list(NA), NA),
           metrique = metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$occurrence_factGraph])
-        sel <- as.character(sel)
+        sel <- sort(as.character(sel))
         length(sel)
       }
     })
@@ -216,7 +216,7 @@ mod_occurrence_frequencies_server <- function(id, load_file){
           metrique = metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$occurrence_factGraph])
         choices <- sort(as.character(choices))
-        shiny::updateSelectInput(inputId = "occurrence_factGraphSel", choices = c("", NA, choices))
+        shiny::updateSelectInput(inputId = "occurrence_factGraphSel", choices = c("", choices))
       } else{
         shiny::updateSelectInput(inputId = "occurrence_factGraphSel", choices = c())
       }
@@ -232,14 +232,14 @@ mod_occurrence_frequencies_server <- function(id, load_file){
       } else{
         ""
       }
-      params$fact_graph_sel <- if (!is.null(input$occurrence_factGraphSel) && input$occurrence_factGraphSel != "NA"){
+      params$fact_graph_sel <- if (!is.null(input$occurrence_factGraphSel)){
         input$occurrence_factGraphSel
       } else{
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = metric_table,
           facts = input$occurrence_factGraph, selections = append(list(NA), NA),
           metrique = metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$occurrence_factGraph])
-        sel <- as.character(sel)
+        sel <- sort(as.character(sel))
       }
       params$list_fact <- input$occurrence_listFact
       params$list_fact_sel <- lapply(1:length_listFact(), function(i){

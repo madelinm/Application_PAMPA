@@ -57,7 +57,6 @@ mod_maps_boxplots_ui <- function(id){
     shiny::mainPanel(width = 9,
       shiny::h3("Maps", align = "center"),
       leaflet::leafletOutput(ns("maps_boxplots"), width = "100%", height = "750px")
-#      mapview::mapviewOutput(ns("maps_boxplots"))
     )
   )
 }
@@ -65,6 +64,8 @@ mod_maps_boxplots_ui <- function(id){
 #' maps_boxplots Server Functions
 #'
 #' @noRd
+#'
+#' @import leaflet
 mod_maps_boxplots_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -221,7 +222,7 @@ mod_maps_boxplots_server <- function(id, load_file){
           metrique = input$maps_boxplots_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$maps_boxplots_factGraph])
         choices <- sort(as.character(choices))
-        shiny::updateSelectInput(inputId = "maps_boxplots_factGraphSel", choices = c("", NA, choices))
+        shiny::updateSelectInput(inputId = "maps_boxplots_factGraphSel", choices = c("", choices))
       } else{
         shiny::updateSelectInput(inputId = "maps_boxplots_factGraphSel", choices = c())
       }
@@ -232,7 +233,7 @@ mod_maps_boxplots_server <- function(id, load_file){
 
       params$aggregation <- input$maps_boxplots_aggregation
       params$fact_spatial <- input$maps_boxplots_factSpatial
-      params$fact_spatial_sel <- if (!is.null(input$maps_boxplots_factSpatialSel) && input$maps_boxplots_factSpatialSel != "NA"){
+      params$fact_spatial_sel <- if (!is.null(input$maps_boxplots_factSpatialSel)){
         input$maps_boxplots_factSpatialSel
       } else{
         NA
@@ -245,7 +246,7 @@ mod_maps_boxplots_server <- function(id, load_file){
       } else{
         ""
       }
-      params$fact_graph_sel <- if (!is.null(input$maps_boxplots_factGraphSel) && input$maps_boxplots_factGraphSel != "NA"){
+      params$fact_graph_sel <- if (!is.null(input$maps_boxplots_factGraphSel)){
         input$maps_boxplots_factGraphSel
       } else{
         NA
@@ -273,8 +274,6 @@ mod_maps_boxplots_server <- function(id, load_file){
       output$maps_boxplots <- leaflet::renderLeaflet({
         map@map
       })
-
-#      output$maps_boxplots <- mapview::renderMapview(map)
 
       shiny::removeModal()
     })

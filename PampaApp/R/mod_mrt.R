@@ -80,7 +80,7 @@ mod_mrt_server <- function(id, load_file){
           facts = input$mrt_factGraph, selections = append(list(NA), NA),
           metrique = input$mrt_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$mrt_factGraph])
-        sel <- as.character(sel)
+        sel <- sort(as.character(sel))
         length(sel)
       }
     })
@@ -218,7 +218,7 @@ mod_mrt_server <- function(id, load_file){
           metrique = input$mrt_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$mrt_factGraph])
         choices <- sort(as.character(choices))
-        shiny::updateSelectInput(inputId = "mrt_factGraphSel", choices = c("", NA, choices))
+        shiny::updateSelectInput(inputId = "mrt_factGraphSel", choices = c("", choices))
       } else{
         shiny::updateSelectInput(inputId = "mrt_factGraphSel", choices = c())
       }
@@ -236,14 +236,14 @@ mod_mrt_server <- function(id, load_file){
       } else{
         ""
       }
-      params$fact_graph_sel <- if (!is.null(input$mrt_factGraphSel) && input$mrt_factGraphSel != "NA"){
+      params$fact_graph_sel <- if (!is.null(input$mrt_factGraphSel)){
         input$mrt_factGraphSel
       } else{
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = input$mrt_metric_table,
           facts = input$mrt_factGraph, selections = append(list(NA), NA),
           metrique = input$mrt_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$mrt_factGraph])
-        sel <- as.character(sel)
+        sel <- sort(as.character(sel))
         sel
       }
       params$list_fact <- input$mrt_listFact

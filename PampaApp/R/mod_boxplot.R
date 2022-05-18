@@ -82,7 +82,7 @@ mod_boxplot_server <- function(id, load_file){
           facts = input$boxplot_factGraph, selections = append(list(NA), NA),
           metrique = input$boxplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$boxplot_factGraph])
-        sel <- as.character(sel)
+        sel <- sort(as.character(sel))
         length(sel)
       }
     })
@@ -220,7 +220,7 @@ mod_boxplot_server <- function(id, load_file){
           metrique = input$boxplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$boxplot_factGraph])
         choices <- sort(as.character(choices))
-        shiny::updateSelectInput(inputId = "boxplot_factGraphSel", choices = c("", NA, choices))
+        shiny::updateSelectInput(inputId = "boxplot_factGraphSel", choices = c("", choices))
       } else{
         shiny::updateSelectInput(inputId = "boxplot_factGraphSel", choices = c())
       }
@@ -238,14 +238,14 @@ mod_boxplot_server <- function(id, load_file){
       } else{
         ""
       }
-      params$fact_graph_sel <- if (!is.null(input$boxplot_factGraphSel) && input$boxplot_factGraphSel != "NA"){
+      params$fact_graph_sel <- if (!is.null(input$boxplot_factGraphSel)){
         input$boxplot_factGraphSel
       } else{
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = input$boxplot_metric_table,
           facts = input$boxplot_factGraph, selections = append(list(NA), NA),
           metrique = input$boxplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$boxplot_factGraph])
-        sel <- as.character(sel)
+        sel <- sort(as.character(sel))
       }
       params$list_fact <- input$boxplot_listFact
       params$list_fact_sel <- lapply(1:length_listFact(), function(i){

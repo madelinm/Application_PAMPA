@@ -188,7 +188,7 @@ mod_maps_symbols_server <- function(id, load_file){
           metrique = input$maps_symbols_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$maps_symbols_factGraph])
         choices <- sort(as.character(choices))
-        shiny::updateSelectInput(inputId = "maps_symbols_factGraphSel", choices = c("", NA, choices))
+        shiny::updateSelectInput(inputId = "maps_symbols_factGraphSel", choices = c("", choices))
       } else{
         shiny::updateSelectInput(inputId = "maps_symbols_factGraphSel", choices = c())
       }
@@ -199,7 +199,7 @@ mod_maps_symbols_server <- function(id, load_file){
 
       params$aggregation <- input$maps_symbols_aggregation
       params$fact_spatial <- input$maps_symbols_factSpatial
-      params$fact_spatial_sel <- if (!is.null(input$maps_symbols_factSpatialSel) && input$maps_symbols_factSpatialSel != "NA"){
+      params$fact_spatial_sel <- if (!is.null(input$maps_symbols_factSpatialSel)){
         input$maps_symbols_factSpatialSel
       } else{
         NA
@@ -212,7 +212,7 @@ mod_maps_symbols_server <- function(id, load_file){
       } else{
         ""
       }
-      params$fact_graph_sel <- if (!is.null(input$maps_symbols_factGraphSel) && input$maps_symbols_factGraphSel != "NA"){
+      params$fact_graph_sel <- if (!is.null(input$maps_symbols_factGraphSel)){
         input$maps_symbols_factGraphSel
       } else{
         NA

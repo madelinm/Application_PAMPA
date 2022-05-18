@@ -74,7 +74,7 @@ mod_linear_model_server <- function(id, load_file){
           facts = input$linear_model_factGraph, selections = append(list(NA), NA),
           metrique = input$linear_model_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$linear_model_factGraph])
-        sel <- as.charactere(sel)
+        sel <- sort(as.charactere(sel))
         length(sel)
       }
     })
@@ -211,7 +211,7 @@ mod_linear_model_server <- function(id, load_file){
           metrique = input$linear_model_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$linear_model_factGraph])
         choices <- sort(as.character(choices))
-        shiny::updateSelectInput(inputId = "linear_model_factGraphSel", choices = c("", NA, choices))
+        shiny::updateSelectInput(inputId = "linear_model_factGraphSel", choices = c("", choices))
       } else{
         shiny::updateSelectInput(inputId = "linear_model_factGraphSel", choices = c())
       }
@@ -229,14 +229,14 @@ mod_linear_model_server <- function(id, load_file){
       } else{
         ""
       }
-      params$fact_graph_sel <- if (!is.null(input$linear_model_factGraphSel) && input$linear_model_factGraphSel != "NA"){
+      params$fact_graph_sel <- if (!is.null(input$linear_model_factGraphSel)){
         input$linear_model_factGraphSel
       } else{
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = input$linear_model_metric_table,
           facts = input$linear_model_factGraph, selections = append(list(NA), NA),
           metrique = input$linear_model_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$linear_model_factGraph])
-        sel <- as.character(sel)
+        sel <- sort(as.character(sel))
       }
       params$list_fact <- input$linear_model_listFact
       params$list_fact_sel <- lapply(1:length_listFact(), function(i){

@@ -17,16 +17,8 @@ app_ui <- function(request) {
         "PAMPA 0.1",
 
       ),
-#      title = img(src = "test.png"),
       shiny::tabPanel("Load Data",
         shiny::fluidPage(
-#          tags$head(
-#            tags$style(HTML("
-#                img {
-#                  max-width: 100%;
-#                }
-#              "))
-#          ),
           mod_load_files_ui("load_files_1")
         )
       ),
@@ -99,11 +91,6 @@ app_ui <- function(request) {
 #' @importFrom golem add_resource_path activate_js favicon bundle_resources
 #' @noRd
 golem_add_external_resources <- function() {
-#  add_resource_path(
-#    "www",
-#    app_sys("app/www")
-#  )
-
   addResourcePath(
     'www',
     system.file('app/www/', package = 'PampaApp')

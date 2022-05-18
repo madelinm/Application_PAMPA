@@ -82,7 +82,7 @@ mod_barplot_server <- function(id, load_file){
           facts = input$barplot_factGraph, selections = append(list(NA), NA),
           metrique = input$barplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$barplot_factGraph])
-        sel <- as.character(sel)
+        sel <- sort(as.character(sel))
         length(sel)
       }
     })
@@ -220,7 +220,7 @@ mod_barplot_server <- function(id, load_file){
           metrique = input$barplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$barplot_factGraph])
         choices <- sort(as.character(choices))
-        shiny::updateSelectInput(inputId = "barplot_factGraphSel", choices = c("", NA, choices))
+        shiny::updateSelectInput(inputId = "barplot_factGraphSel", choices = c("", choices))
       } else{
         shiny::updateSelectInput(inputId = "barplot_factGraphSel", choices = c())
       }
@@ -229,26 +229,26 @@ mod_barplot_server <- function(id, load_file){
     shiny::observeEvent(input$barplot_launch_button, {
       shiny::showModal(shiny::modalDialog("Creation of graphics...", footer = NULL))
 
-      params$aggregation = input$barplot_aggregation
-      params$metric_table = input$barplot_metric_table
-      params$metric = input$barplot_metric
-      params$type_fact = input$barplot_type_fact
-      params$fact_graph = if (!is.null(input$barplot_factGraph) && input$barplot_factGraph != "NA"){
+      params$aggregation <- input$barplot_aggregation
+      params$metric_table <- input$barplot_metric_table
+      params$metric <- input$barplot_metric
+      params$type_fact <- input$barplot_type_fact
+      params$fact_graph <- if (!is.null(input$barplot_factGraph) && input$barplot_factGraph != "NA"){
         input$barplot_factGraph
       } else{
         ""
       }
-      params$fact_graph_sel = if (!is.null(input$barplot_factGraphSel) && input$barplot_factGraphSel != "NA"){
+      params$fact_graph_sel <- if (!is.null(input$barplot_factGraphSel)){
         input$barplot_factGraphSel
       } else{
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = input$barplot_metric_table,
           facts = input$barplot_factGraph, selections = append(list(NA), NA),
           metrique = input$barplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$barplot_factGraph])
-        sel <- as.character(sel)
+        sel <- sort(as.character(sel))
       }
-      params$list_fact = input$barplot_listFact
-      params$list_fact_sel = lapply(1:length_listFact(), function(i){
+      params$list_fact <- input$barplot_listFact
+      params$list_fact_sel <- lapply(1:length_listFact(), function(i){
         id <- paste("barplot_listFactSel_", i, sep = "")
         if (!is.null(input[[id]])) input[[id]] else NA
       })
