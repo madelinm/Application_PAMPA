@@ -12,6 +12,7 @@ mod_boxplot_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
+      shinyFeedback::useShinyFeedback(),
       shiny::h3("Boxplot", align = "center"),
       shiny::h5("One value of metric per observation unit.", align = "center"),
       shiny::br(),
@@ -226,7 +227,28 @@ mod_boxplot_server <- function(id, load_file){
       }
     })
 
+    shiny::observeEvent(input$boxplot_metric, {
+      shinyFeedback::hideFeedback("boxplot_metric")
+    })
+
+    shiny::observeEvent(input$boxplot_listFact, {
+      shinyFeedback::hideFeedback("boxplot_listFact")
+    })
+
     shiny::observeEvent(input$boxplot_launch_button, {
+      error <- FALSE
+      if (input$boxplot_metric == ""){
+        shinyFeedback::showFeedbackDanger("boxplot_metric", text = "A metric is required.")
+        error <- TRUE
+      }
+      if (is.null(input$boxplot_listFact)){
+        shinyFeedback::showFeedbackDanger("boxplot_listFact", text = "Explanatory factor(s) are required.")
+        error <- TRUE
+      }
+      if (error){
+        req(NULL)
+      }
+
       shiny::showModal(shiny::modalDialog("Creation of graphics...", footer = NULL))
 
       params$aggregation <- input$boxplot_aggregation
