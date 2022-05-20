@@ -11,6 +11,7 @@ mod_occurrence_frequencies_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
+      shinyFeedback::useShinyFeedback(),
       shiny::h3("Occurrence frequencies", align = "center"),
       shiny::h5("One value per combination of factor levels", align = "center"),
       shiny::br(),
@@ -193,7 +194,26 @@ mod_occurrence_frequencies_server <- function(id, load_file){
       }
     })
 
+    shiny::observeEvent(input$occurrence_listFact, {
+      shinyFeedback::hideFeedback("occurrence_listFact")
+      if (length_listFact() > 2){
+        shinyFeedback::showFeedbackDanger("occurrence_listFact", text = "Cannot have more than 2 explanatory factors.")
+      }
+    })
+
     shiny::observeEvent(input$occurrence_launch_button, {
+      error <- FALSE
+      if (is.null(input$occurrence_listFact)){
+        shinyFeedback::showFeedbackDanger("occurrence_listFact", text = "Explanatory factor(s) are required.")
+        error <- TRUE
+      }
+      if (length_listFact() > 2){
+        error <- TRUE
+      }
+      if (error){
+        shiny::req(NULL)
+      }
+
       shiny::showModal(shiny::modalDialog("Creation of graphics...", footer = NULL))
 
       params$aggregation <- input$occurrence_aggregation
