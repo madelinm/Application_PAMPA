@@ -11,6 +11,7 @@ mod_linear_model_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
+      shinyFeedback::useShinyFeedback(),
       shiny::h3("Linear models", align = "center"),
       shiny::br(),
       shinyWidgets::radioGroupButtons(ns("linear_model_aggregation"), "Choose an aggregation",
@@ -217,7 +218,37 @@ mod_linear_model_server <- function(id, load_file){
       }
     })
 
+    shiny::observeEvent(input$linear_model_metric, {
+      shinyFeedback::hideFeedback("linear_model_metric")
+    })
+
+    shiny::observeEvent(input$linear_model_listFact, {
+      shinyFeedback::hideFeedback("linear_model_listFact")
+      if (length_listFact() == 3){
+        shinyFeedback::showFeedbackWarning("linear_model_listFact", text = "From 3 grouping factors, the results become difficult to exploit")
+      }
+      if (length_listFact() > 3){
+        shinyFeedback::showFeedbackDanger("linear_model_listFact", text = "Too many grouping factors selected, the results would not be exploitable.")
+      }
+    })
+
     shiny::observeEvent(input$linear_model_launch_button, {
+      error <- FALSE
+      if (input$linear_model_metric == ""){
+        shinyFeedback::showFeedbackDanger("linear_model_metric", text = "A metric is required.")
+        error <- TRUE
+      }
+      if (is.null(input$linear_model_listFact)){
+        shinyFeedback::showFeedbackDanger("linear_model_listFact", text = "Explanatory factor(s) are required.")
+        error <- TRUE
+      }
+      if ( length_listFact() > 3){
+        error <- TRUE
+      }
+      if (error){
+        shiny::req(NULL)
+      }
+
       shiny::showModal(shiny::modalDialog("Creation of graphics...", footer = NULL))
 
       params$aggregation <- input$linear_model_aggregation
