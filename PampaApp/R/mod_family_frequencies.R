@@ -42,7 +42,7 @@ mod_family_frequencies_ui <- function(id){
     shiny::mainPanel(width = 9,
       shiny::h3("Graphics", align = "center"),
       shiny::actionButton(ns("family_save_graphics"), "Save graphics"),
-      shiny::uiOutput(ns("family"))
+      shiny::uiOutput(ns("graph_family"))
     )
   )
 }
@@ -145,11 +145,13 @@ mod_family_frequencies_server <- function(id, load_file){
       }
       params$fact_graph_sel <- if (!is.null(input$family_factGraphSel)){
         input$family_factGraphSel
-      } else{
+      } else if (params$fact_graph != ""){
         sel <- unique(PAMPA::selectModalites.f(tableMetrique = metric_table,
           facts = input$family_factGraph, selections = append(list(NA), NA), metrique = metric,
           nextStep = next_step, dataEnv = .GlobalEnv, level = 0)[, input$family_factGraph])
         sel <- as.character(sel)
+      } else{
+        NA
       }
       params$fact <- input$family_fact
       params$fact_sel <- if (!is.null(input$family_factSel)){
@@ -163,15 +165,33 @@ mod_family_frequencies_server <- function(id, load_file){
         NA
       }
 
-      output$family <- shiny::renderUI({
-        lapply(1:isolate(length_factGraphSel()), function(iFact){
-          id <- paste("family_", iFact, sep = "")
+      if (params$fact_graph != ""){
+        output$graph_family <- shiny::renderUI({
+          lapply(1:isolate(length_factGraphSel()), function(iFact){
+            id <- paste("family_", iFact, sep = "")
+            shiny::plotOutput(outputId = id)
+
+            output[[id]] <- shiny::renderPlot({
+              PAMPA::freq_occurrence_familles.f(
+                factGraph = params$fact_graph,
+                factGraphSel = params$fact_graph_sel[iFact],
+                fact = params$fact,
+                factSel = params$fact_sel,
+                families = params$families,
+                new_window = FALSE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
+              )
+            })
+          })
+        })
+      } else{
+        output$graph_family <- shiny::renderUI({
+          id <- "family"
           shiny::plotOutput(outputId = id)
 
           output[[id]] <- shiny::renderPlot({
             PAMPA::freq_occurrence_familles.f(
               factGraph = params$fact_graph,
-              factGraphSel = params$fact_graph_sel[iFact],
+              factGraphSel = params$fact_graph_sel,
               fact = params$fact,
               factSel = params$fact_sel,
               families = params$families,
@@ -179,7 +199,7 @@ mod_family_frequencies_server <- function(id, load_file){
             )
           })
         })
-      })
+      }
       shiny::removeModal()
     })
 
