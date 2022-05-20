@@ -12,6 +12,7 @@ mod_barplot_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
+      shinyFeedback::useShinyFeedback(),
       shiny::h3("Barplot", align = "center"),
       shiny::h5("One value of metric per observation unit.", align = "center"),
       shiny::br(),
@@ -226,7 +227,34 @@ mod_barplot_server <- function(id, load_file){
       }
     })
 
+    shiny::observeEvent(input$barplot_metric, {
+      shinyFeedback::hideFeedback("barplot_metric")
+    })
+
+    shiny::observeEvent(input$barplot_listFact, {
+      shinyFeedback::hideFeedback("barplot_listFact")
+      if (length_listFact() > 2){
+        shinyFeedback::showFeedbackDanger("barplot_listFact", text = "Cannot have more than 2 explanatory factors.")
+      }
+    })
+
     shiny::observeEvent(input$barplot_launch_button, {
+      error <- FALSE
+      if (input$barplot_metric == ""){
+        shinyFeedback::showFeedbackDanger("barplot_metric", text = "A metric is required.")
+        error <- TRUE
+      }
+      if (is.null(input$barplot_listFact)){
+        shinyFeedback::showFeedbackDanger("barplot_listFact", text = "Explanatory factor(s) are required.")
+        error <- TRUE
+      }
+      if (length_listFact() > 2){
+        error <- TRUE
+      }
+      if (error){
+        shiny::req(NULL)
+      }
+
       shiny::showModal(shiny::modalDialog("Creation of graphics...", footer = NULL))
 
       params$aggregation <- input$barplot_aggregation
