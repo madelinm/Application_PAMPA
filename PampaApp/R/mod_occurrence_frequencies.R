@@ -112,19 +112,6 @@ mod_occurrence_frequencies_server <- function(id, load_file){
         load_file()
       }, {
         if (input$occurrence_aggregation == "espece"){
-          if (load_file() != 0 && (PAMPA:::is.benthos.f() | nrow(get("unitSpSz", envir = .GlobalEnv)) == 0)){
-            shiny::updateRadioButtons(inputId = "occurrence_metric_table",
-              choices = c(
-                "... / station / species" = "unitSp")
-            )
-          } else{
-            shiny::updateRadioButtons(inputId = "occurrence_metric_table",
-              choices = c(
-                "... / station / species / size classe" = "unitSpSz",
-                "... / station / species" = "unitSp"),
-              selected = "unitSp"
-            )
-          }
           shiny::updateRadioButtons(inputId = "occurrence_type_fact",
             label = "Generate one plot per...",
             choices = c(
@@ -133,22 +120,6 @@ mod_occurrence_frequencies_server <- function(id, load_file){
             selected = "refesp"
           )
         } else{
-          if (load_file() != 0 && (PAMPA:::is.benthos.f() | nrow(get("unitSpSz", envir = .GlobalEnv)) == 0)){
-            shiny::updateRadioButtons(inputId = "occurrence_metric_table",
-              choices = c(
-                "... / station" = "unitSp",
-                "... of biodiversity (/ station)" = "unit"),
-              selected = "unitSp"
-            )
-          } else{
-            shiny::updateRadioButtons(inputId = "occurrence_metric_table",
-              choices = c(
-                "... / station / size classe" = "unitSpSz",
-                "... / station" = "unitSp",
-                "... of biodiversity (/ station)" = "unit"),
-              selected = "unitSp"
-            )
-          }
           shiny::updateRadioButtons(inputId = "occurrence_type_fact",
             label = "Subset species per...",
             choices = c(
