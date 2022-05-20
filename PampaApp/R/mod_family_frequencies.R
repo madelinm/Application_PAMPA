@@ -11,6 +11,7 @@ mod_family_frequencies_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
+      shinyFeedback::useShinyFeedback(),
       shiny::h3("Family frequencies", align = "center"),
       shiny::h5("One value per family for each combination of factor level", align = "center"),
       shiny::br(),
@@ -135,7 +136,20 @@ mod_family_frequencies_server <- function(id, load_file){
       }
     })
 
+    shiny::observeEvent(input$family_fact, {
+      shinyFeedback::hideFeedback("family_fact")
+    })
+
     shiny::observeEvent(input$family_launch_button, {
+      error <- FALSE
+      if (input$family_fact == ""){
+        shinyFeedback::showFeedbackDanger("family_fact", "A explanatory factor is required")
+        error <- TRUE
+      }
+      if (error){
+        shiny::req(NULL)
+      }
+
       shiny::showModal(shiny::modalDialog("Creation of graphics...", footer = NULL))
 
       params$fact_graph <- if (!is.null(input$family_factGraph) && input$family_factGraph != "NA"){
