@@ -15,6 +15,7 @@ mod_load_files_ui <- function(id){
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
       shinyjs::useShinyjs(),
+      shinyFeedback::useShinyFeedback(),
       shiny::h3("Data / Files", align = "center"),
       shiny::br(),
       shinyWidgets::radioGroupButtons(ns("data_load_selection"), "",
@@ -130,6 +131,30 @@ mod_load_files_server <- function(id){
 
 
     shiny::observeEvent(input$load_load_data_button, {
+      error <- FALSE
+      if (is.null(reactives$ws)){
+        shiny::showModal(shiny::modalDialog(
+          shiny::h4(shiny::strong("A working directory is required."),
+            style = "color: #d9534f; background-color: #ffffff",
+            align = "center"),
+          easyClose = TRUE
+        ))
+        error <- TRUE
+      }
+      if (is.null(reactives$unitobs)){
+        shinyFeedback::showFeedbackDanger("load_unitobs_file", text = "An unitobs file is required.")
+        error <- TRUE
+      }
+      if (is.null(reactives$obs)){
+        shinyFeedback::showFeedbackDanger("load_obs_file", text = "An observation file is required.")
+        error <- TRUE
+      }
+      if (is.null(reactives$refesp)){
+        shinyFeedback::showFeedbackDanger("load_refesp_file", text = "A species reference table is required.")
+        error <- TRUE
+      }
+      if (error) req(NULL)
+
       shiny::showModal(shiny::modalDialog("Loading data...", footer = NULL))
       button$load_file <- button$load_file + 1
 
