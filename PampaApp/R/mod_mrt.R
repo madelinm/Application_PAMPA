@@ -40,7 +40,7 @@ mod_mrt_ui <- function(id){
       shiny::selectInput(ns("mrt_factGraphSel"), "Select categories of the factor for the graphic separation (all by default)",
         choices = c(), multiple = TRUE
       ),
-      shiny::selectInput(ns("mrt_listFact"), "Select explanatory factors(s) for plotting",
+      shiny::selectInput(ns("mrt_listFact"), "Select explanatory factors(s) for plotting (order doesn't matter)",
         choices = c(), multiple = TRUE
       ),
       shiny::uiOutput(ns("mrt_listFactSel")),
@@ -238,13 +238,15 @@ mod_mrt_server <- function(id, load_file){
       }
       params$fact_graph_sel <- if (!is.null(input$mrt_factGraphSel)){
         input$mrt_factGraphSel
-      } else{
+      } else if (params$fact_graph != ""){
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = input$mrt_metric_table,
           facts = input$mrt_factGraph, selections = append(list(NA), NA),
           metrique = input$mrt_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$mrt_factGraph])
         sel <- sort(as.character(sel))
         sel
+      } else{
+        NA
       }
       params$list_fact <- input$mrt_listFact
       params$list_fact_sel <- lapply(1:length_listFact(), function(i){
@@ -252,7 +254,7 @@ mod_mrt_server <- function(id, load_file){
         if (!is.null(input[[id]])) input[[id]] else NA
       })
 
-      if (params$aggregation == "espece"){
+      if (params$aggregation == "espece" & params$fact_graph != ""){
         output$stats_mrt <- shiny::renderUI({
           lapply(1:isolate(length_factGraphSel()), function(iFact){
             id <- paste("mrt_", iFact, sep = "")

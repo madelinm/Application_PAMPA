@@ -262,12 +262,14 @@ mod_boxplot_server <- function(id, load_file){
       }
       params$fact_graph_sel <- if (!is.null(input$boxplot_factGraphSel)){
         input$boxplot_factGraphSel
-      } else{
+      } else if (params$fact_graph != ""){
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = input$boxplot_metric_table,
           facts = input$boxplot_factGraph, selections = append(list(NA), NA),
           metrique = input$boxplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$boxplot_factGraph])
         sel <- sort(as.character(sel))
+      } else{
+        NA
       }
       params$list_fact <- input$boxplot_listFact
       params$list_fact_sel <- lapply(1:length_listFact(), function(i){
@@ -275,7 +277,7 @@ mod_boxplot_server <- function(id, load_file){
         if (!is.null(input[[id]])) input[[id]] else NA
       })
 
-      if (params$aggregation == "espece"){
+      if (params$aggregation == "espece" & params$fact_graph != ""){
         output$graph_boxplot <- shiny::renderUI({
           lapply(1:isolate(length_factGraphSel()), function(iFact){
             id <- paste("boxplot_", iFact, sep = "")

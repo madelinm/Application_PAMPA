@@ -234,12 +234,14 @@ mod_occurrence_frequencies_server <- function(id, load_file){
       }
       params$fact_graph_sel <- if (!is.null(input$occurrence_factGraphSel)){
         input$occurrence_factGraphSel
-      } else{
+      } else if (params$fact_graph != ""){
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = metric_table,
           facts = input$occurrence_factGraph, selections = append(list(NA), NA),
           metrique = metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$occurrence_factGraph])
         sel <- sort(as.character(sel))
+      } else{
+        NA
       }
       params$list_fact <- input$occurrence_listFact
       params$list_fact_sel <- lapply(1:length_listFact(), function(i){
@@ -247,7 +249,7 @@ mod_occurrence_frequencies_server <- function(id, load_file){
         if (!is.null(input[[id]])) input[[id]] else NA
       })
 
-      if (params$aggregation == "espece"){
+      if (params$aggregation == "espece" & params$fact_graph != ""){
         output$graph_occurrence <- shiny::renderUI({
           lapply(1:isolate(length_factGraphSel()), function(iFact){
             id <- paste("occurrence_", iFact, sep = "")

@@ -231,12 +231,14 @@ mod_linear_model_server <- function(id, load_file){
       }
       params$fact_graph_sel <- if (!is.null(input$linear_model_factGraphSel)){
         input$linear_model_factGraphSel
-      } else{
+      } else if (params$fact_graph != ""){
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = input$linear_model_metric_table,
           facts = input$linear_model_factGraph, selections = append(list(NA), NA),
           metrique = input$linear_model_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$linear_model_factGraph])
         sel <- sort(as.character(sel))
+      } else{
+        NA
       }
       params$list_fact <- input$linear_model_listFact
       params$list_fact_sel <- lapply(1:length_listFact(), function(i){
@@ -244,7 +246,7 @@ mod_linear_model_server <- function(id, load_file){
         if (!is.null(input[[id]])) input[[id]] else NA
       })
 
-      if (params$aggregation == "espece"){
+      if (params$aggregation == "espece" & params$fact_graph != ""){
         output$stats_linear_model <- shiny::renderUI({
           lapply(1:isolate(length_factGraphSel()), function(iFact){
             id <- paste("linear_model_", iFact, sep = "")

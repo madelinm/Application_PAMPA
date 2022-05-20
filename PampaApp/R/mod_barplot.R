@@ -240,12 +240,14 @@ mod_barplot_server <- function(id, load_file){
       }
       params$fact_graph_sel <- if (!is.null(input$barplot_factGraphSel)){
         input$barplot_factGraphSel
-      } else{
+      } else if (params$fact_graph != ""){
         sel <- unique(PAMPA:::selectModalites.f(tableMetrique = input$barplot_metric_table,
           facts = input$barplot_factGraph, selections = append(list(NA), NA),
           metrique = input$barplot_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$barplot_factGraph])
         sel <- sort(as.character(sel))
+      } else{
+        NA
       }
       params$list_fact <- input$barplot_listFact
       params$list_fact_sel <- lapply(1:length_listFact(), function(i){
@@ -253,7 +255,7 @@ mod_barplot_server <- function(id, load_file){
         if (!is.null(input[[id]])) input[[id]] else NA
       })
 
-      if (params$aggregation == "espece"){
+      if (params$aggregation == "espece" & params$fact_graph != ""){
         output$graph_barplot <- shiny::renderUI({
           lapply(1:isolate(length_factGraphSel()), function(iFact){
             id <- paste("barplot_", iFact, sep = "")
