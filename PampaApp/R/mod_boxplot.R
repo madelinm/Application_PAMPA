@@ -246,7 +246,7 @@ mod_boxplot_server <- function(id, load_file){
         error <- TRUE
       }
       if (error){
-        req(NULL)
+        shiny::req(NULL)
       }
 
       shiny::showModal(shiny::modalDialog("Creation of graphics...", footer = NULL))

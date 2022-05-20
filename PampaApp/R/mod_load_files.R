@@ -156,7 +156,7 @@ mod_load_files_server <- function(id){
         shinyFeedback::showFeedbackDanger("load_refesp_file", text = "A species reference table is required.")
         error <- TRUE
       }
-      if (error) req(NULL)
+      if (error) shiny::req(NULL)
 
       shiny::showModal(shiny::modalDialog("Loading data...", footer = NULL))
       button$load_file <- button$load_file + 1
