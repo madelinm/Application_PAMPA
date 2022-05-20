@@ -110,14 +110,17 @@ mod_load_files_server <- function(id){
     )
 
     shiny::observeEvent(input$load_obs_file, {
+      shinyFeedback::hideFeedback("load_obs_file")
       reactives$obs <- as.character(input$load_obs_file["datapath"])
     })
 
     shiny::observeEvent(input$load_unitobs_file, {
+      shinyFeedback::hideFeedback("load_unitobs_file")
       reactives$unitobs <- as.character(input$load_unitobs_file["datapath"])
     })
 
     shiny::observeEvent(input$load_refesp_file, {
+      shinyFeedback::hideFeedback("load_refesp_file")
       reactives$refesp <- as.character(input$load_refesp_file["datapath"])
     })
 
@@ -132,7 +135,7 @@ mod_load_files_server <- function(id){
 
     shiny::observeEvent(input$load_load_data_button, {
       error <- FALSE
-      if (is.null(reactives$ws)){
+      if (typeof(input$load_ws) == "integer"){
         shiny::showModal(shiny::modalDialog(
           shiny::h4(shiny::strong("A working directory is required."),
             style = "color: #d9534f; background-color: #ffffff",
@@ -158,13 +161,13 @@ mod_load_files_server <- function(id){
       shiny::showModal(shiny::modalDialog("Loading data...", footer = NULL))
       button$load_file <- button$load_file + 1
 
-      ws <- paste(volumes["Home"], paste(input$load_ws$path[-1], collapse = "/"), "", sep = "/")
+      ws <- paste(volumes[input$load_ws$root], paste(input$load_ws$path[-1], collapse = "/"), "", sep = "/")
 
       obs_file <- reactives$obs
       unitobs_file <- reactives$unitobs
       refesp_file <- reactives$refesp
       local_refesp_file <- reactives$loc_refesp
-      refspa_file <- if(!is.null(reactives$refspa)) paste(ws, "Maps/", reactives$refspa, sep = "") else NULL
+      refspa_file <- if(!is.null(reactives$refspa)) paste(ws, "Data/Maps/", reactives$refspa, sep = "") else NULL
 
       path <- c(unitobs = unitobs_file, obs = obs_file, refesp =  refesp_file, locrefesp = local_refesp_file, refspa = refspa_file, ws = ws)
       data <- PAMPA::load_files.f(path, dminMax = input$load_dmin, .GlobalEnv, .GlobalEnv)
