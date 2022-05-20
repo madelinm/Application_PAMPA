@@ -12,6 +12,7 @@ mod_mrt_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
+      shinyFeedback::useShinyFeedback(),
       shiny::h3("Multivariate Regression Trees", align = "center"),
       shiny::br(),
       shinyWidgets::radioGroupButtons(ns("mrt_aggregation"), "Choose an aggregation",
@@ -224,7 +225,28 @@ mod_mrt_server <- function(id, load_file){
       }
     })
 
+    shiny::observeEvent(input$mrt_metric, {
+      shinyFeedback::hideFeedback("mrt_metric")
+    })
+
+    shiny::observeEvent(input$mrt_listFact, {
+      shinyFeedback::hideFeedback("mrt_listFact")
+    })
+
     shiny::observeEvent(input$mrt_launch_button, {
+      error <- FALSE
+      if (input$mrt_metric == ""){
+        shinyFeedback::showFeedbackDanger("mrt_metric", text = "A metric is required.")
+        error <- TRUE
+      }
+      if (is.null(input$mrt_listFact)){
+        shinyFeedback::showFeedbackDanger("mrt_listFact", text = "Explanatory factor(s) are required.")
+        error <- TRUE
+      }
+      if (error){
+        shiny::req(NULL)
+      }
+
       shiny::showModal(shiny::modalDialog("Creation of graphics...", footer = NULL))
 
       params$aggregation <- input$mrt_aggregation
