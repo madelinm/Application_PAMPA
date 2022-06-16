@@ -11,7 +11,7 @@ app_ui <- function(request) {
     # Your application UI logic
     shiny::navbarPage(
       title = div(
-        img(src = "www/pampa.GIF",
+        img(src = "www/logopampa.PNG",
           height = "45px",
           style = "position: relative; margin:-15px 0px;"),
         "PAMPA 0.1",
@@ -71,11 +71,16 @@ app_ui <- function(request) {
           shiny::fluidPage(
             mod_maps_boxplots_ui("maps_boxplots_1")
           )
+        ),
+        shiny::tabPanel("With barplot",
+          shiny::fluidPage(
+            mod_maps_barplots_ui("maps_barplots_1")
+          )
         )
       ),
       shiny::tabPanel("Options",
         shiny::fluidPage(
-          mod_plot_options_ui("plot_options_1")
+          mod_plot_options_ui("plot_options_1"),
         )
       )
     )
