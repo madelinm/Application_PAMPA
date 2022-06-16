@@ -35,6 +35,7 @@ app_server <- function(input, output, session) {
   mod_maps_symbols_server("maps_symbols_1", load_file)
   mod_maps_colours_server("maps_colours_1", load_file)
   mod_maps_boxplots_server("maps_boxplots_1", load_file)
+  mod_maps_barplots_server("maps_barplots_1", load_file)
 
   mod_plot_options_server("plot_options_1")
 }
