@@ -292,6 +292,7 @@ mod_linear_model_server <- function(id, load_file){
                 listFact = params$list_fact,
                 listFactSel = params$list_fact_sel,
                 tableMetrique = params$metric_table,
+                new_window = FALSE,
                 dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
               )
             })
@@ -311,6 +312,7 @@ mod_linear_model_server <- function(id, load_file){
               listFact = params$list_fact,
               listFactSel = params$list_fact_sel,
               tableMetrique = params$metric_table,
+              new_window = FALSE,
               dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
             )
           })
