@@ -272,7 +272,7 @@ mod_maps_boxplots_server <- function(id, load_file){
       )
 
       output$maps_boxplots <- leaflet::renderLeaflet({
-        map@map
+        map
       })
 
       shiny::removeModal()
