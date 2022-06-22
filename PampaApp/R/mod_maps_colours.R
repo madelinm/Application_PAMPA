@@ -64,6 +64,7 @@ mod_maps_colours_ui <- function(id){
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom shinyjs reset
 #' @importFrom PAMPA maps.f
 #' @importFrom leaflet renderLeaflet
 mod_maps_colours_server <- function(id, load_file){
@@ -86,6 +87,12 @@ mod_maps_colours_server <- function(id, load_file){
         "espece" = "spSymbols.esp",
         "unitobs" = "spSymbols.unitobs")
     )
+
+    shiny::observeEvent(load_file(), {
+      shinyjs::reset(id = "maps_colours_factSpatialSel")
+      shinyjs::reset(id = "maps_colours_factGraphSel")
+      output$maps_colours <- NULL
+    })
 
     shiny::observeEvent({
       input$maps_colours_aggregation

@@ -68,6 +68,7 @@ mod_maps_barplots_ui <- function(id){
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom shinyjs reset
 #' @importFrom PAMPA maps.f
 #' @importFrom leaflet renderLeaflet
 mod_maps_barplots_server <- function(id, load_file){
@@ -96,6 +97,12 @@ mod_maps_barplots_server <- function(id, load_file){
         "espece" = "spBarBoxplot.esp",
         "unitobs" = "spBarBoxplot.unitobs")
     )
+
+    shiny::observeEvent(load_file(), {
+      shinyjs::reset(id = "maps_barplots_factSpatialSel")
+      shinyjs::reset(id = "maps_barplots_factGraphSel")
+      output$maps_barplots <- NULL
+    })
 
     shiny::observeEvent(input$maps_barplots_aggregation, {
       if (input$maps_barplots_aggregation == "espece"){

@@ -68,6 +68,7 @@ mod_maps_boxplots_ui <- function(id){
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom shinyjs reset
 #' @importFrom PAMPA maps.f
 #' @importFrom leaflet renderLeaflet
 mod_maps_boxplots_server <- function(id, load_file){
@@ -96,6 +97,12 @@ mod_maps_boxplots_server <- function(id, load_file){
         "espece" = "spBarBoxplot.esp",
         "unitobs" = "spBarBoxplot.unitobs")
     )
+
+    shiny::observeEvent(load_file(), {
+      shinyjs::reset(id = "maps_boxplots_factSpatialSel")
+      shinyjs::reset(id = "maps_boxplots_factGraphSel")
+      output$maps_boxplots <- NULL
+    })
 
     shiny::observeEvent(input$maps_boxplots_aggregation, {
       if (input$maps_boxplots_aggregation == "espece"){
