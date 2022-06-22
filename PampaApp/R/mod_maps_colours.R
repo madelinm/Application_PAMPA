@@ -41,7 +41,7 @@ mod_maps_colours_ui <- function(id){
           "... station characteristic" = "unitobs",
           "... species characteristic" = "refesp")
       ),
-      shiny::selectInput(ns("maps_colours_factGraph"), "select the factor for the graphic separation",
+      shiny::selectInput(ns("maps_colours_factGraph"), "Select the factor for the graphic separation",
         choices = c()
       ),
       shiny::selectInput(ns("maps_colours_factGraphSel"), "Select categories of the factor for the  graphic separation (all by default)",
@@ -66,6 +66,7 @@ mod_maps_colours_ui <- function(id){
 #' @import shiny
 #' @importFrom shinyjs reset
 #' @importFrom PAMPA maps.f
+#' @importFrom shinyFeedback hideFeedback showFeedbackDanger
 #' @importFrom leaflet renderLeaflet
 mod_maps_colours_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
@@ -204,7 +205,29 @@ mod_maps_colours_server <- function(id, load_file){
       }
     })
 
+    shiny::observeEvent(input$maps_colours_factSpatial, {
+      shinyFeedback::hideFeedback("maps_colours_factSpatial")
+    })
+
+    shiny::observeEvent(input$maps_colours_metric, {
+      shinyFeedback::hideFeedback("maps_colours_metric")
+    })
+
+
     shiny::observeEvent(input$maps_colours_launch_button, {
+      error <- FALSE
+      if (input$maps_colours_factSpatial == ""){
+        shinyFeedback::showFeedbackDanger("maps_colours_factSpatial", text = "A spatial grouping factor is required.")
+        error <- TRUE
+      }
+      if (input$maps_colours_metric == ""){
+        shinyFeedback::showFeedbackDanger("maps_colours_metric", text = "A metric is required.")
+        error <- TRUE
+      }
+      if (error){
+        shiny::req(NULL)
+      }
+
       shiny::showModal(shiny::modalDialog("Creation of map...", footer = NULL))
 
       params$aggregation <- input$maps_colours_aggregation

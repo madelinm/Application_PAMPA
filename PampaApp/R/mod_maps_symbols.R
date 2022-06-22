@@ -41,7 +41,7 @@ mod_maps_symbols_ui <- function(id){
           "... station characteristic" = "unitobs",
           "... species characteristic" = "refesp")
       ),
-      shiny::selectInput(ns("maps_symbols_factGraph"), "select the factor for the graphic separation",
+      shiny::selectInput(ns("maps_symbols_factGraph"), "Select the factor for the graphic separation",
         choices = c()
       ),
       shiny::selectInput(ns("maps_symbols_factGraphSel"), "Select categories of the factor for the  graphic separation (all by default)",
@@ -66,6 +66,7 @@ mod_maps_symbols_ui <- function(id){
 #' @import shiny
 #' @importFrom shinyjs reset
 #' @importFrom PAMPA maps.f
+#' @importFrom shinyFeedback hideFeedback showFeedbackDanger
 #' @importFrom leaflet renderLeaflet
 mod_maps_symbols_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
@@ -206,7 +207,28 @@ mod_maps_symbols_server <- function(id, load_file){
       }
     })
 
+    shiny::observeEvent(input$maps_symbols_factSpatial, {
+      shinyFeedback::hideFeedback("maps_symbols_factSpatial")
+    })
+
+    shiny::observeEvent(input$maps_symbols_metric, {
+      shinyFeedback::hideFeedback("maps_symbols_metric")
+    })
+
     shiny::observeEvent(input$maps_symbols_launch_button, {
+      error <- FALSE
+      if (input$maps_symbols_factSpatial == ""){
+        shinyFeedback::showFeedbackDanger("maps_symbols_factSpatial", text = "A spatial grouping factor is required.")
+        error <- TRUE
+      }
+      if (input$maps_symbols_metric == ""){
+        shinyFeedback::showFeedbackDanger("maps_symbols_metric", text = "A metric is required.")
+        error <- TRUE
+      }
+      if (error){
+        shiny::req(NULL)
+      }
+
       shiny::showModal(shiny::modalDialog("Creation of graphics...", footer = NULL))
 
       params$aggregation <- input$maps_symbols_aggregation

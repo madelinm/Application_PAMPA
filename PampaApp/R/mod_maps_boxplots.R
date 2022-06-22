@@ -41,7 +41,7 @@ mod_maps_boxplots_ui <- function(id){
           "... station characteristic" = "unitobs",
           "... species characteristic" = "refesp")
       ),
-      shiny::selectInput(ns("maps_boxplots_factGraph"), "select the factor for the graphic separation",
+      shiny::selectInput(ns("maps_boxplots_factGraph"), "Select the factor for the graphic separation",
         choices = c()
       ),
       shiny::selectInput(ns("maps_boxplots_factGraphSel"), "Select categories of the factor for the  graphic separation (all by default)",
@@ -70,6 +70,7 @@ mod_maps_boxplots_ui <- function(id){
 #' @import shiny
 #' @importFrom shinyjs reset
 #' @importFrom PAMPA maps.f
+#' @importFrom shinyFeedback hideFeedback showFeedbackDanger
 #' @importFrom leaflet renderLeaflet
 mod_maps_boxplots_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
@@ -239,7 +240,36 @@ mod_maps_boxplots_server <- function(id, load_file){
       }
     })
 
+    shiny::observeEvent(input$maps_boxplots_factSpatial, {
+      shinyFeedback::hideFeedback("maps_boxplots_factSpatial")
+    })
+
+    shiny::observeEvent(input$maps_boxplots_metric, {
+      shinyFeedback::hideFeedback("maps_boxplots_metric")
+    })
+
+    shiny::observeEvent(input$maps_boxplots_listFact, {
+      shinyFeedback::hideFeedback("maps_boxplots_listFact")
+    })
+
     shiny::observeEvent(input$maps_boxplots_launch_button, {
+      error <- FALSE
+      if (input$maps_boxplots_factSpatial == ""){
+        shinyFeedback::showFeedbackDanger("maps_boxplots_factSpatial", text = "A spatial grouping factor is required.")
+        error <- TRUE
+      }
+      if (input$maps_boxplots_metric == ""){
+        shinyFeedback::showFeedbackDanger("maps_boxplots_metric", text = "A metric is required.")
+        error <- TRUE
+      }
+      if (is.null(input$maps_boxplots_listFact)){
+        shinyFeedback::showFeedbackDanger("maps_boxplots_listFact", text = "Explanatory factor(s) are required.")
+        error <- TRUE
+      }
+      if (error){
+        shiny::req(NULL)
+      }
+
       shiny::showModal(shiny::modalDialog("Creation of graphics...", footer = NULL))
 
       params$aggregation <- input$maps_boxplots_aggregation
