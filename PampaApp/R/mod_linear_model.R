@@ -122,8 +122,8 @@ mod_linear_model_server <- function(id, load_file){
           shiny::updateRadioButtons(inputId = "linear_model_type_fact",
             label = "Generate one plot per...",
             choices = c(
-              "... / station characteristic" = "unitobs",
-              "... / species characteristic" = "refesp"),
+              "... station characteristic" = "unitobs",
+              "... species characteristic" = "refesp"),
             selected = "refesp"
           )
         } else{
