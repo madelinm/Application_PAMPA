@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @import shiny
 mod_occurrence_frequencies_options_ui <- function(id){
   ns <- NS(id)
   shiny::actionButton(ns("occurrence_options"), "Occurrence frequencies options")
@@ -15,6 +15,9 @@ mod_occurrence_frequencies_options_ui <- function(id){
 #' occurrence_frequencies_options Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
+#' @importFrom colourpicker colourInput updateColourInput
 mod_occurrence_frequencies_options_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns

@@ -8,7 +8,14 @@ License: MIT + file LICENSE
 Imports: 
     config (>= 0.3.1),
     golem (>= 0.3.2),
-    shiny (>= 1.7.1)
+    shiny (>= 1.7.1),
+    colourpicker,
+    fs,
+    leaflet,
+    shinyFiles,
+    shinyjs,
+    shinyWidgets,
+    shinyFeedback
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

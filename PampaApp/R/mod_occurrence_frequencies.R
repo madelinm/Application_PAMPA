@@ -6,7 +6,9 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @import shiny
+#' @importFrom shinyFeedback useShinyFeedback
+#' @importFrom shinyWidgets radioGroupButtons
 mod_occurrence_frequencies_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -62,6 +64,11 @@ mod_occurrence_frequencies_ui <- function(id){
 #' occurrence_frequencies Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
+#' @importFrom PAMPA freq_occurrence.f
+#' @importFrom shinyjs reset
+#' @importFrom shinyFeedback hideFeedback showFeedbackDanger
 mod_occurrence_frequencies_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
     ns <- session$ns

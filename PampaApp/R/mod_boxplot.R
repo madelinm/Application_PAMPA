@@ -6,8 +6,9 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
-#' @import shinyWidgets
+#' @import shiny
+#' @importFrom shinyFeedback useShinyFeedback
+#' @importFrom shinyWidgets radioGroupButtons
 mod_boxplot_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -67,6 +68,11 @@ mod_boxplot_ui <- function(id){
 #' boxplot Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
+#' @importFrom PAMPA boxplot_pampa.f
+#' @importFrom shinyjs reset
+#' @importFrom shinyFeedback hideFeedback showFeedbackDanger
 mod_boxplot_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
     ns <- session$ns

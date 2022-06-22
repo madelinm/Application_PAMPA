@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @import shiny
 mod_barplot_options_ui <- function(id){
   ns <- NS(id)
   shiny::actionButton(ns("barplot_options"), "Barplot options")
@@ -15,6 +15,9 @@ mod_barplot_options_ui <- function(id){
 #' barplot_options Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
+#' @importFrom colourpicker colourInput updateColourInput
 mod_barplot_options_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns

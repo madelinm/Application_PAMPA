@@ -6,8 +6,9 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
-#' @import leaflet
+#' @import shiny
+#' @importFrom shinyWidgets radioGroupButtons
+#' @importFrom leaflet leafletOutput
 mod_maps_symbols_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -61,6 +62,10 @@ mod_maps_symbols_ui <- function(id){
 #' maps_symbols Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
+#' @importFrom PAMPA maps.f
+#' @importFrom leaflet renderLeaflet
 mod_maps_symbols_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -144,7 +149,7 @@ mod_maps_symbols_server <- function(id, load_file){
         input$maps_symbols_factSpatial
       }, {
         if(input$maps_symbols_factSpatial != "" & input$maps_symbols_factSpatial != "NA"){
-          choices <- unique(selectModalitesSpatiales.f(tableMetrique = input$maps_symbols_metric_table,
+          choices <- unique(PAMPA:::selectModalitesSpatiales.f(tableMetrique = input$maps_symbols_metric_table,
             facts = input$maps_symbols_factSpatial, selections = append(list(NA), NA),
             metrique = input$maps_symbols_metric, nextStep = next_step(),
             dataEnv = .GlobalEnv)[, input$maps_symbols_factSpatial])

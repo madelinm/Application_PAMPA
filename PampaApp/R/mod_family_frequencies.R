@@ -6,7 +6,8 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @import shiny
+#' @importFrom shinyFeedback useShinyFeedback
 mod_family_frequencies_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -51,6 +52,11 @@ mod_family_frequencies_ui <- function(id){
 #' family_frequencies Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
+#' @importFrom PAMPA freq_occurrence_familles.f
+#' @importFrom shinyjs reset
+#' @importFrom shinyFeedback hideFeedback showFeedbackDanger
 mod_family_frequencies_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -160,7 +166,7 @@ mod_family_frequencies_server <- function(id, load_file){
       params$fact_graph_sel <- if (!is.null(input$family_factGraphSel)){
         input$family_factGraphSel
       } else if (params$fact_graph != ""){
-        sel <- unique(PAMPA::selectModalites.f(tableMetrique = metric_table,
+        sel <- unique(PAMPA:::selectModalites.f(tableMetrique = metric_table,
           facts = input$family_factGraph, selections = append(list(NA), NA), metrique = metric,
           nextStep = next_step, dataEnv = .GlobalEnv, level = 0)[, input$family_factGraph])
         sel <- as.character(sel)

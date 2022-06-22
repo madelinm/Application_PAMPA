@@ -6,8 +6,9 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
-#' @import shinyWidgets
+#' @import shiny
+#' @importFrom shinyFeedback useShinyFeedback
+#' @importFrom shinyWidgets radioGroupButtons
 mod_mrt_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -65,6 +66,11 @@ mod_mrt_ui <- function(id){
 #' mrt Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
+#' @importFrom PAMPA mrt.f
+#' @importFrom shinyjs reset
+#' @importFrom shinyFeedback hideFeedback showFeedbackDanger
 mod_mrt_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
     ns <- session$ns

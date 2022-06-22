@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @import shiny
 mod_boxplot_options_ui <- function(id){
   ns <- NS(id)
   shiny::actionButton(ns("boxplot_options"), "Boxplot options")
@@ -15,6 +15,9 @@ mod_boxplot_options_ui <- function(id){
 #' boxplot_options Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
+#' @importFrom colourpicker colourInput updateColourInput
 mod_boxplot_options_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns

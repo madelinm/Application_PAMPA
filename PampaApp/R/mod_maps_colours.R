@@ -6,7 +6,9 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @import shiny
+#' @importFrom shinyWidgets radioGroupButtons
+#' @importFrom leaflet leafletOutput
 mod_maps_colours_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -60,6 +62,10 @@ mod_maps_colours_ui <- function(id){
 #' maps_colours Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
+#' @importFrom PAMPA maps.f
+#' @importFrom leaflet renderLeaflet
 mod_maps_colours_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -142,7 +148,7 @@ mod_maps_colours_server <- function(id, load_file){
       input$maps_colours_factSpatial
     }, {
       if (input$maps_colours_factSpatial != "" & input$maps_colours_factSpatial != "NA"){
-        choices <- unique(selectModalitesSpatiales.f(tableMetrique = input$maps_colours_metric_table,
+        choices <- unique(PAMPA:::selectModalitesSpatiales.f(tableMetrique = input$maps_colours_metric_table,
           facts = input$maps_colours_factSpatial, selections = append(list(NA), NA),
           metrique = input$maps_colours_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv)[, input$maps_colours_factSpatial])

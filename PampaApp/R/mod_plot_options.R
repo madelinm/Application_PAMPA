@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @import shiny
 mod_plot_options_ui <- function(id){
   ns <- NS(id)
   shiny::actionButton(ns("plot_options"), "Common graphical options")
@@ -15,6 +15,9 @@ mod_plot_options_ui <- function(id){
 #' plot_options Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
+#' @importFrom shinyjs toggleState
 mod_plot_options_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns

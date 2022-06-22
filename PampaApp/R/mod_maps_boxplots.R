@@ -6,7 +6,9 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @import shiny
+#' @importFrom shinyWidgets radioGroupButtons
+#' @importFrom leaflet leafletOutput
 mod_maps_boxplots_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -65,7 +67,9 @@ mod_maps_boxplots_ui <- function(id){
 #'
 #' @noRd
 #'
-#' @import leaflet
+#' @import shiny
+#' @importFrom PAMPA maps.f
+#' @importFrom leaflet renderLeaflet
 mod_maps_boxplots_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -179,7 +183,7 @@ mod_maps_boxplots_server <- function(id, load_file){
       input$maps_boxplots_factSpatial
     }, {
       if(input$maps_boxplots_factSpatial != "" & input$maps_boxplots_factSpatial != "NA"){
-        choices <- unique(selectModalitesSpatiales.f(tableMetrique = input$maps_boxplots_metric_table,
+        choices <- unique(PAMPA:::selectModalitesSpatiales.f(tableMetrique = input$maps_boxplots_metric_table,
           facts = input$maps_boxplots_factSpatial, selections = append(list(NA), NA),
           metrique = input$maps_boxplots_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv)[, input$maps_boxplots_factSpatial])

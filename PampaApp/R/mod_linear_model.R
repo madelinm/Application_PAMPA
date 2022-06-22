@@ -6,7 +6,9 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @import shiny
+#' @importFrom shinyFeedback useShinyFeedback
+#' @importFrom shinyWidgets radioGroupButtons
 mod_linear_model_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -59,6 +61,11 @@ mod_linear_model_ui <- function(id){
 #' linear_model Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
+#' @importFrom PAMPA lm.f
+#' @importFrom shinyjs reset
+#' @importFrom shinyFeedback hideFeedback showFeedbackWarning showFeedbackDanger
 mod_linear_model_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
     ns <- session$ns

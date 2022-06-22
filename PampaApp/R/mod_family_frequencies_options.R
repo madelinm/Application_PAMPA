@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @import shiny
 mod_family_frequencies_options_ui <- function(id){
   ns <- NS(id)
   shiny::actionButton(ns("family_options"), "Family frequencies options")
@@ -15,6 +15,8 @@ mod_family_frequencies_options_ui <- function(id){
 #' family_frequencies_options Server Functions
 #'
 #' @noRd
+#'
+#' @import shiny
 mod_family_frequencies_options_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns

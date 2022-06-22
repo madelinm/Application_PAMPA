@@ -6,10 +6,11 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
-#' @import shinyFiles
-#' @import shinyjs
-#' @import shinyWidgets
+#' @import shiny
+#' @importFrom shinyjs useShinyjs hidden
+#' @importFrom shinyFeedback useShinyFeedback
+#' @importFrom shinyWidgets radioGroupButtons
+#' @importFrom shinyFiles shinyDirButton
 mod_load_files_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -76,9 +77,12 @@ mod_load_files_ui <- function(id){
 #'
 #' @noRd
 #'
-#' @import shinyjs
-#' @import shinyFiles
-#' @import fs
+#' @import shiny
+#' @importFrom shinyjs show hide reset
+#' @importFrom shinyFiles getVolumes shinyDirChoose
+#' @importFrom shinyFeedback hideFeedback showFeedbackDanger
+#' @importFrom fs path_home
+#' @importFrom PAMPA load_files.f selection.f restoreData.f
 mod_load_files_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
