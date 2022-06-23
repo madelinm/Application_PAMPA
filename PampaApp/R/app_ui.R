@@ -54,6 +54,11 @@ app_ui <- function(request) {
           shiny::fluidPage(
             mod_mrt_ui("mrt_1")
           )
+        ),
+        shiny::tabPanel("Permanova",
+          shiny::fluidPage(
+            mod_permanova_ui("permanova_1")
+          )
         )
       ),
       shiny::navbarMenu("Maps",
@@ -80,7 +85,7 @@ app_ui <- function(request) {
       ),
       shiny::tabPanel("Options",
         shiny::fluidPage(
-          mod_plot_options_ui("plot_options_1"),
+          mod_plot_options_ui("plot_options_1")
         )
       )
     )

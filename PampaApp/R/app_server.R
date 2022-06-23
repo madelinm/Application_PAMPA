@@ -32,6 +32,8 @@ app_server <- function(input, output, session) {
   mod_mrt_server("mrt_1", load_file)
   mod_plot_options_server("plot_options_6")
 
+  mod_permanova_server("permanova_1", load_file)
+
   mod_maps_symbols_server("maps_symbols_1", load_file)
   mod_maps_colours_server("maps_colours_1", load_file)
   mod_maps_boxplots_server("maps_boxplots_1", load_file)
