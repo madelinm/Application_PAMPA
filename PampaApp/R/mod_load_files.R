@@ -7,6 +7,7 @@
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom bsplus use_bs_tooltip bs_embed_tooltip shiny_iconlink shinyInput_label_embed
 #' @importFrom shinyjs useShinyjs hidden
 #' @importFrom shinyFeedback useShinyFeedback
 #' @importFrom shinyWidgets radioGroupButtons
@@ -15,6 +16,7 @@ mod_load_files_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
     shiny::sidebarPanel(width = 3,
+      bsplus::use_bs_tooltip(),
       shinyjs::useShinyjs(),
       shinyFeedback::useShinyFeedback(),
       shiny::h3("Data / Files", align = "center"),
@@ -28,15 +30,27 @@ mod_load_files_ui <- function(id){
       ),
       shiny::div(id = ns("data_load"),
         shiny::br(),
-        shinyFiles::shinyDirButton(ns("load_ws"), "Select the working directory", "Select a folder", FALSE),
+        bsplus::bs_embed_tooltip(
+          shiny::div(shinyFiles::shinyDirButton(ns("load_ws"), "Select the working directory", "Select a folder", FALSE)),
+          bsplus::shiny_iconlink(),
+          placement = "top",
+          title = "The working directory must contain a data folder where the datasets are located."
+        ),
         shiny::br(),
         shiny::br(),
         shiny::fileInput(ns("load_unitobs_file"), "Choose an unitobs file"),
         shiny::fileInput(ns("load_obs_file"), "Choose an observation file"),
         shiny::fileInput(ns("load_refesp_file"), "Choose a species reference table"),
-        shiny::fileInput(ns("load_local_refesp_file"), "Choose a local species reference table"),
-        shiny::fileInput(ns("load_refspa_file"), "Choose a spatial reference table"),
-        shiny::numericInput(ns("load_dmin"), "Max value for Dmin (in m) (for STAVIRO data only)", value = 5),
+        shiny::fileInput(ns("load_local_refesp_file"), "Choose a local species reference table (optional)"),
+        shiny::fileInput(ns("load_refspa_file"), "Choose a spatial reference table (optional)"),
+        bsplus::shinyInput_label_embed(
+          shiny::numericInput(ns("load_dmin"), "Max value for Dmin (in m) (for STAVIRO data only)", value = 5),
+          bsplus::bs_embed_tooltip(
+            bsplus::shiny_iconlink(),
+            placement = "top",
+            title = "Select the minimal threshold of Min.Distance (in m) above which observations are not tacking in consideration. For STAVIRO data only."
+          )
+        ),
         shiny::div(
           shiny::actionButton(ns("load_load_data_button"), "Load"),
           shiny::actionButton(ns("load_reset_button"), "Reset"),
