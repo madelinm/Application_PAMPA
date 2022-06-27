@@ -8,7 +8,6 @@ app_server <- function(input, output, session) {
   # Your application server logic
   options(shiny.maxRequestSize = 30*1024^2)
 
-  devtools::load_all(path = "C:/Users/mmadelin/Documents/GitHub/Package_PAMPA")
   load_file <- mod_load_files_server("load_files_1")
 
   mod_boxplot_server("boxplot_1", load_file)
