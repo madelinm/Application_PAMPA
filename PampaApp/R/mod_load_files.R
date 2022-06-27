@@ -31,13 +31,18 @@ mod_load_files_ui <- function(id){
       shiny::div(id = ns("data_load"),
         shiny::br(),
         bsplus::bs_embed_tooltip(
-          shiny::div(shinyFiles::shinyDirButton(ns("load_ws"), "Select the working directory", "Select a folder", FALSE)),
+          shiny::div(shinyFiles::shinyDirButton(ns("load_ws_choosen"), "Select the working directory", "Select a folder", FALSE)),
           bsplus::shiny_iconlink(),
           placement = "top",
           title = "The working directory must contain a data folder where the datasets are located."
         ),
         shiny::br(),
-        shiny::br(),
+        bsplus::bs_embed_tooltip(
+          shiny::textInput(ns("load_ws_written"), "Path of the working directory"),
+          bsplus::shiny_iconlink(),
+          placement = "top",
+          title = "The working directory must contain a data folder where the datasets are located."
+        ),
         shiny::fileInput(ns("load_unitobs_file"), "Choose an unitobs file"),
         shiny::fileInput(ns("load_obs_file"), "Choose an observation file"),
         shiny::fileInput(ns("load_refesp_file"), "Choose a species reference table"),
@@ -112,7 +117,7 @@ mod_load_files_server <- function(id){
     })
 
     volumes <- c(Home = fs::path_home(), "R Installation" = R.home(), shinyFiles::getVolumes()())
-    shinyFiles::shinyDirChoose(input, "load_ws", roots = volumes, session = session, restrictions = system.file(package = "base"))
+    shinyFiles::shinyDirChoose(input, "load_ws_choosen", roots = volumes, session = session, restrictions = system.file(package = "base"))
 
     button <- shiny::reactiveValues(
       load_file = 0
@@ -126,6 +131,19 @@ mod_load_files_server <- function(id){
       refspa = NULL,
       list_filters = "None"
     )
+
+    shiny::observeEvent(input$load_ws_choosen, {
+      if (length(input$load_ws_choosen) > 1){
+        shiny::updateTextInput(inputId = "load_ws_written",
+          value = paste(volumes[input$load_ws_choosen$root], paste(input$load_ws_choosen$path[-1],
+            collapse = "/"), "", sep = "/")
+        )
+      }
+    })
+
+    shiny::observeEvent(input$load_ws_written, {
+      shinyFeedback::hideFeedback("load_ws_written")
+    })
 
     shiny::observeEvent(input$load_obs_file, {
       shinyFeedback::hideFeedback("load_obs_file")
@@ -153,13 +171,17 @@ mod_load_files_server <- function(id){
 
     shiny::observeEvent(input$load_load_data_button, {
       error <- FALSE
-      if (typeof(input$load_ws) == "integer"){
+      if (typeof(input$load_ws_choosen) == "integer" && input$load_ws_written == ""){
         shiny::showModal(shiny::modalDialog(
           shiny::h4(shiny::strong("A working directory is required."),
             style = "color: #d9534f; background-color: #ffffff",
             align = "center"),
           easyClose = TRUE
         ))
+        error <- TRUE
+      }
+      if (!dir.exists(input$load_ws_written)){
+        shinyFeedback::showFeedbackDanger("load_ws_written", text = "This directory doesn't exist.")
         error <- TRUE
       }
       if (is.null(reactives$unitobs)){
@@ -179,7 +201,7 @@ mod_load_files_server <- function(id){
       shiny::showModal(shiny::modalDialog("Loading data...", footer = NULL))
       button$load_file <- button$load_file + 1
 
-      ws <- paste(volumes[input$load_ws$root], paste(input$load_ws$path[-1], collapse = "/"), "", sep = "/")
+      ws <- input$load_ws_written
 
       obs_file <- reactives$obs
       unitobs_file <- reactives$unitobs
