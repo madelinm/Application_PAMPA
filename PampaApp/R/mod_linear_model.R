@@ -82,7 +82,7 @@ mod_linear_model_server <- function(id, load_file){
           facts = input$linear_model_factGraph, selections = append(list(NA), NA),
           metrique = input$linear_model_metric, nextStep = next_step(),
           dataEnv = .GlobalEnv, level = 0)[, input$linear_model_factGraph])
-        sel <- sort(as.charactere(sel))
+        sel <- sort(as.character(sel))
         length(sel)
       }
     })

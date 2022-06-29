@@ -65,7 +65,7 @@ mod_family_frequencies_server <- function(id, load_file){
       if (!is.null(input$family_factGraphSel) && input$family_factGraphSel != "NA"){
         length(input$family_factGraphSel)
       } else {
-        sel <- unique(PAMPA::selectModalites.f(tableMetrique = metric_table,
+        sel <- unique(PAMPA:::selectModalites.f(tableMetrique = metric_table,
           facts = input$family_factGraph, selections = append(list(NA), NA), metrique = metric,
           nextStep = next_step, dataEnv = .GlobalEnv, level = 0)[, input$family_factGraph])
         sel <- as.character(sel)
