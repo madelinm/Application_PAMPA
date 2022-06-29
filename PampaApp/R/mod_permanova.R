@@ -58,6 +58,7 @@ mod_permanova_ui <- function(id){
         value = 1000, min = 1, step = 1
       ),
       shiny::checkboxInput(ns("permanova_sqrt_root"), "Use the square roots"),
+      shiny::checkboxInput(ns("permanova_post_hoc"), "Do a post-hoc after permanova (not fully efficient)"),
       shiny::div(
         shiny::actionButton(ns("permanova_launch_button"), "Launch analysis")
       )
@@ -87,7 +88,8 @@ mod_permanova_server <- function(id, load_file){
       formula = NULL,
       method = NULL,
       nb_perm = NULL,
-      sqrt_roots = NULL
+      sqrt_roots = NULL,
+      post_hoc = NULL
     )
 
     shiny::observeEvent(input$permanova_metric, {
@@ -158,6 +160,7 @@ mod_permanova_server <- function(id, load_file){
       params$method <- input$permanova_method
       params$nb_perm <- input$permanova_nb_perm
       params$sqrt_roots <- input$permanova_sqrt_root
+      params$post_hoc <- input$permanova_post_hoc
 
       output$permanova_result <- shiny::renderTable(
         PAMPA::permanova_pampa.f(
@@ -167,6 +170,7 @@ mod_permanova_server <- function(id, load_file){
           method = params$method,
           nb_perm = params$nb_perm,
           square_roots = params$sqrt_roots,
+          post_hoc = params$post_hoc,
           dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
         )
       )
