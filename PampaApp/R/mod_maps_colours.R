@@ -264,7 +264,7 @@ mod_maps_colours_server <- function(id, load_file){
       )
 
       output$maps_colours <- leaflet::renderLeaflet({
-        map@map
+        map
       })
 
       shiny::removeModal()

@@ -265,7 +265,7 @@ mod_maps_symbols_server <- function(id, load_file){
       )
 
       output$maps_symbols <- leaflet::renderLeaflet({
-        map@map
+        map
       })
 
       shiny::removeModal()
