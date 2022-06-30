@@ -8,6 +8,7 @@
 #'
 #' @import shiny
 #' @importFrom shinyFeedback useShinyFeedback
+#' @importFrom shinycssloaders withSpinner
 mod_family_frequencies_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -44,7 +45,12 @@ mod_family_frequencies_ui <- function(id){
     shiny::mainPanel(width = 9,
       shiny::h3("Graphics", align = "center"),
       shiny::actionButton(ns("family_save_graphics"), "Save graphics"),
-      shiny::uiOutput(ns("graph_family"))
+      shinycssloaders::withSpinner(
+        shiny::uiOutput(ns("graph_family")),
+        type = 3,
+        color = "#CCCCCC",
+        color.background = "#FFFFFF"
+      )
     )
   )
 }

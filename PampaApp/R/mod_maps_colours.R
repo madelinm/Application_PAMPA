@@ -9,6 +9,7 @@
 #' @import shiny
 #' @importFrom shinyWidgets radioGroupButtons
 #' @importFrom leaflet leafletOutput
+#' @importFrom shinycssloaders withSpinner
 mod_maps_colours_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -54,7 +55,12 @@ mod_maps_colours_ui <- function(id){
     ),
     shiny::mainPanel(width = 9,
       shiny::h3("Maps", align = "center"),
-      leaflet::leafletOutput(ns("maps_colours"), width = "100%", height = "750px")
+      shinycssloaders::withSpinner(
+        leaflet::leafletOutput(ns("maps_colours"), width = "100%", height = "750px"),
+        type = 3,
+        color = "#CCCCCC",
+        color.background = "#FFFFFF"
+      )
     )
   )
 }

@@ -9,6 +9,7 @@
 #' @import shiny
 #' @importFrom shinyFeedback useShinyFeedback
 #' @importFrom shinyWidgets radioGroupButtons
+#' @importFrom shinycssloaders withSpinner
 mod_mrt_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -58,7 +59,12 @@ mod_mrt_ui <- function(id){
     shiny::mainPanel(width = 9,
       shiny::h3("Graphics", align = "center"),
       shiny::actionButton(ns("mrt_save_graphics"), "Save graphics"),
-      shiny::uiOutput(ns("stats_mrt"))
+      shinycssloaders::withSpinner(
+        shiny::uiOutput(ns("stats_mrt")),
+        type = 3,
+        color = "#CCCCCC",
+        color.background = "#FFFFFF"
+      )
     )
   )
 }

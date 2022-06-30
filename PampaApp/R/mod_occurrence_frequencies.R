@@ -9,6 +9,7 @@
 #' @import shiny
 #' @importFrom shinyFeedback useShinyFeedback
 #' @importFrom shinyWidgets radioGroupButtons
+#' @importFrom shinycssloaders withSpinner
 mod_occurrence_frequencies_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -56,7 +57,12 @@ mod_occurrence_frequencies_ui <- function(id){
     shiny::mainPanel(width = 9,
       shiny::h3("Graphics", align = "center"),
       shiny::actionButton(ns("occurrence_save_graphics"), "Save graphics"),
-      shiny::uiOutput(ns("graph_occurrence"))
+      shinycssloaders::withSpinner(
+        shiny::uiOutput(ns("graph_occurrence")),
+        type = 3,
+        color = "#CCCCCC",
+        color.background = "#FFFFFF"
+      )
     )
   )
 }

@@ -9,6 +9,7 @@
 #' @import shiny
 #' @importFrom shinyFeedback useShinyFeedback
 #' @importFrom shinyWidgets radioGroupButtons
+#' @importFrom shinycssloaders withSpinner
 mod_barplot_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -60,7 +61,12 @@ mod_barplot_ui <- function(id){
     shiny::mainPanel(width = 9,
       shiny::h3("Graphics", align = "center"),
       shiny::actionButton(ns("barplot_save_graphics"), "Save graphics"),
-      shiny::uiOutput(ns("graph_barplot"))
+      shinycssloaders::withSpinner(
+        shiny::uiOutput(ns("graph_barplot")),
+        type = 3,
+        color = "#CCCCCC",
+        color.background = "#FFFFFF"
+      )
     )
   )
 }

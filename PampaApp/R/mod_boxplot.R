@@ -9,6 +9,7 @@
 #' @import shiny
 #' @importFrom shinyFeedback useShinyFeedback
 #' @importFrom shinyWidgets radioGroupButtons
+#' @importFrom shinycssloaders withSpinner
 mod_boxplot_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -60,7 +61,12 @@ mod_boxplot_ui <- function(id){
     shiny::mainPanel(width = 9,
       shiny::h3("Graphics", align = "center"),
       shiny::actionButton(ns("boxplot_save_graphics"), "Save graphics"),
-      shiny::uiOutput(ns("graph_boxplot"))
+      shinycssloaders::withSpinner(
+        shiny::uiOutput(ns("graph_boxplot")),
+        type = 3,
+        color = "#CCCCCC",
+        color.background = "#FFFFFF"
+      )
     )
   )
 }

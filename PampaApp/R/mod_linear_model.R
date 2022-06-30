@@ -9,6 +9,7 @@
 #' @import shiny
 #' @importFrom shinyFeedback useShinyFeedback
 #' @importFrom shinyWidgets radioGroupButtons
+#' @importFrom shinycssloaders withSpinner
 mod_linear_model_ui <- function(id){
   ns <- NS(id)
   shiny::sidebarLayout(
@@ -53,7 +54,12 @@ mod_linear_model_ui <- function(id){
     ),
     shiny::mainPanel(width = 9,
       shiny::h3("Graphics", align = "center"),
-      shiny::uiOutput(ns("stats_linear_model"))
+      shinycssloaders::withSpinner(
+        shiny::uiOutput(ns("stats_linear_model")),
+        type = 3,
+        color = "#CCCCCC",
+        color.background = "#FFFFFF"
+      )
     )
   )
 }
