@@ -47,7 +47,14 @@ mod_load_files_ui <- function(id){
         shiny::fileInput(ns("load_obs_file"), "Choose an observation file"),
         shiny::fileInput(ns("load_refesp_file"), "Choose a species reference table"),
         shiny::fileInput(ns("load_local_refesp_file"), "Choose a local species reference table (optional)"),
-        shiny::fileInput(ns("load_refspa_file"), "Choose a spatial reference table (optional)"),
+        bsplus::shinyInput_label_embed(
+          shiny::fileInput(ns("load_refspa_file"), "Choose a spatial reference table (optional)"),
+          bsplus::bs_embed_tooltip(
+            bsplus::shiny_iconlink(),
+            placement = "top",
+            title = "The spatial reference table must be a shapefile (.shp) and must be in a folder named 'Maps' (in the folder 'Data')."
+          )
+        ),
         bsplus::shinyInput_label_embed(
           shiny::numericInput(ns("load_dmin"), "Max value for Dmin (in m) (for STAVIRO data only)", value = 5),
           bsplus::bs_embed_tooltip(
@@ -167,7 +174,6 @@ mod_load_files_server <- function(id){
     shiny::observeEvent(input$load_refspa_file, {
       reactives$refspa <- as.character(input$load_refspa_file["name"])
     })
-
 
     shiny::observeEvent(input$load_load_data_button, {
       error <- FALSE
