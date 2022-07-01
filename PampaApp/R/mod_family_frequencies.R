@@ -45,12 +45,7 @@ mod_family_frequencies_ui <- function(id){
     shiny::mainPanel(width = 9,
       shiny::h3("Graphics", align = "center"),
       shiny::actionButton(ns("family_save_graphics"), "Save graphics"),
-      shinycssloaders::withSpinner(
-        shiny::uiOutput(ns("graph_family")),
-        type = 3,
-        color = "#CCCCCC",
-        color.background = "#FFFFFF"
-      )
+      shiny::uiOutput(ns("graph_family"))
     )
   )
 }
@@ -120,7 +115,7 @@ mod_family_frequencies_server <- function(id, load_file){
     shiny::observeEvent(load_file(), {
       if (load_file() != 0){
         choices <- PAMPA:::refTablesFields.aliases(nomTable = metric_table, dataEnv = .GlobalEnv)
-        shiny::updateSelectInput(inputId = "family_fact", choices = c("", choices))
+        shiny::updateSelectInput(inputId = "family_fact", choices = c("", NA, choices))
       }
     })
 
@@ -148,14 +143,14 @@ mod_family_frequencies_server <- function(id, load_file){
       }
     })
 
-    shiny::observeEvent(input$family_fact, {
-      shinyFeedback::hideFeedback("family_fact")
+    shiny::observeEvent(input$family_factGraph, {
+      shinyFeedback::hideFeedback("family_factGraph")
     })
 
     shiny::observeEvent(input$family_launch_button, {
       error <- FALSE
-      if (input$family_fact == ""){
-        shinyFeedback::showFeedbackDanger("family_fact", "A explanatory factor is required")
+      if (input$family_factGraph == ""){
+        shinyFeedback::showFeedbackDanger("family_factGraph", "An explanatory factor is required")
         error <- TRUE
       }
       if (error){
@@ -179,7 +174,11 @@ mod_family_frequencies_server <- function(id, load_file){
       } else{
         NA
       }
-      params$fact <- input$family_fact
+      params$fact <- if (!is.null(input$family_fact) && input$family_fact != "NA" && input$family_fact != ""){
+        input$family_fact
+      } else{
+        NA
+      }
       params$fact_sel <- if (!is.null(input$family_factSel)){
         input$family_factSel
       } else{
