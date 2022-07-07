@@ -75,6 +75,7 @@ mod_occurrence_frequencies_ui <- function(id){
 #' @importFrom PAMPA freq_occurrence.f
 #' @importFrom shinyjs reset
 #' @importFrom shinyFeedback hideFeedback showFeedbackDanger
+#' @importFrom R.utils setOption
 mod_occurrence_frequencies_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -308,7 +309,7 @@ mod_occurrence_frequencies_server <- function(id, load_file){
 
     shiny::observeEvent(input$occurrence_save, {
       if ("pdf" %in% input$occurrence_export_format){
-        setOption("P.graphPDF", TRUE)
+        R.utils::setOption("P.graphPDF", TRUE)
         PAMPA::freq_occurrence.f(
           agregation = params$aggregation,
           factGraph = params$fact_graph,
@@ -317,10 +318,10 @@ mod_occurrence_frequencies_server <- function(id, load_file){
           listFactSel = params$list_fact_sel,
           new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
         )
-        setOption("P.graphPDF", FALSE)
+        R.utils::setOption("P.graphPDF", FALSE)
       }
       if ("png" %in% input$occurrence_export_format){
-        setOption("P.graphPNG", TRUE)
+        R.utils::setOption("P.graphPNG", TRUE)
         PAMPA::freq_occurrence.f(
           agregation = params$aggregation,
           factGraph = params$fact_graph,
@@ -329,10 +330,10 @@ mod_occurrence_frequencies_server <- function(id, load_file){
           listFactSel = params$list_fact_sel,
           new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
         )
-        setOption("P.graphPNG", FALSE)
+        R.utils::setOption("P.graphPNG", FALSE)
       }
       if ("wmf" %in% input$occurrence_export_format){
-        setOption("P.graphWMF", TRUE)
+        R.utils::setOption("P.graphWMF", TRUE)
         PAMPA::freq_occurrence.f(
           agregation = params$aggregation,
           factGraph = params$fact_graph,
@@ -341,7 +342,7 @@ mod_occurrence_frequencies_server <- function(id, load_file){
           listFactSel = params$list_fact_sel,
           new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
         )
-        setOption("P.graphWMF", FALSE)
+        R.utils::setOption("P.graphWMF", FALSE)
       }
       shiny::removeModal()
     })

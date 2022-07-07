@@ -18,6 +18,7 @@ mod_occurrence_frequencies_options_ui <- function(id){
 #'
 #' @import shiny
 #' @importFrom colourpicker colourInput updateColourInput
+#' @importFrom R.utils setOption
 mod_occurrence_frequencies_options_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -50,17 +51,17 @@ mod_occurrence_frequencies_options_server <- function(id){
     })
 
     shiny::observeEvent(input$occurrence_options_ok,{
-      setOption("P.NbObs", input$occurrence_options_nb_obs)
-      setOption("P.NbObsCol", input$occurrence_options_nb_obs_col)
-      setOption("P.warnings", input$occurrence_options_warnings)
+      R.utils::setOption("P.NbObs", input$occurrence_options_nb_obs)
+      R.utils::setOption("P.NbObsCol", input$occurrence_options_nb_obs_col)
+      R.utils::setOption("P.warnings", input$occurrence_options_warnings)
 
       shiny::removeModal()
     })
 
     shiny::observeEvent(input$occurrence_options_reset, {
-      setOption("P.NbObs", occurrence_optn$nb_obs)
-      setOption("P.NbObsCol", occurrence_optn$nb_obs_col)
-      setOption("P.warnings", occurrence_optn$warnings)
+      R.utils::setOption("P.NbObs", occurrence_optn$nb_obs)
+      R.utils::setOption("P.NbObsCol", occurrence_optn$nb_obs_col)
+      R.utils::setOption("P.warnings", occurrence_optn$warnings)
 
       shiny::updateCheckboxInput(inputId = "occurrence_options_nb_obs", value = occurrence_optn$nb_obs)
       colourpicker::updateColourInput(session = session, inputId = "occurrence_options_nb_obs_col", value = occurrence_optn$nb_obs_col)

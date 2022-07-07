@@ -17,6 +17,7 @@ mod_family_frequencies_options_ui <- function(id){
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom R.utils setOption
 mod_family_frequencies_options_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -40,12 +41,12 @@ mod_family_frequencies_options_server <- function(id){
     })
 
     shiny::observeEvent(input$family_options_ok,{
-      setOption("P.warnings", input$family_options_warnings)
+      R.utils::setOption("P.warnings", input$family_options_warnings)
       shiny::removeModal()
     })
 
     shiny::observeEvent(input$family_options_reset, {
-      setOption("P.warnings", family_optn$warnings)
+      R.utils::setOption("P.warnings", family_optn$warnings)
       shiny::updateCheckboxInput(inputId = "family_options_warnings", value = family_optn$warnings)
     })
   })

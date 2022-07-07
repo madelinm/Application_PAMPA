@@ -79,6 +79,7 @@ mod_barplot_ui <- function(id){
 #' @importFrom PAMPA barplot_pampa.f
 #' @importFrom shinyjs reset
 #' @importFrom shinyFeedback hideFeedback showFeedbackDanger
+#' @importFrom R.utils setOption
 mod_barplot_server <- function(id, load_file){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -354,7 +355,7 @@ mod_barplot_server <- function(id, load_file){
 
     shiny::observeEvent(input$barplot_save, {
       if ("pdf" %in% input$barplot_export_format){
-        setOption("P.graphPDF", TRUE)
+        R.utils::setOption("P.graphPDF", TRUE)
         PAMPA::barplot_pampa.f(
           agregation = params$aggregation,
           metrique = params$metric,
@@ -365,10 +366,10 @@ mod_barplot_server <- function(id, load_file){
           tableMetrique = params$metric_table,
           new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
         )
-        setOption("P.graphPDF", FALSE)
+        R.utils::setOption("P.graphPDF", FALSE)
       }
       if ("png" %in% input$barplot_export_format){
-        setOption("P.graphPNG", TRUE)
+        R.utils::setOption("P.graphPNG", TRUE)
         PAMPA::barplot_pampa.f(
           agregation = params$aggregation,
           metrique = params$metric,
@@ -379,10 +380,10 @@ mod_barplot_server <- function(id, load_file){
           tableMetrique = params$metric_table,
           new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
         )
-        setOption("P.graphPNG", FALSE)
+        R.utils::setOption("P.graphPNG", FALSE)
       }
       if ("wmf" %in% input$barplot_export_format){
-        setOption("P.graphWMF", TRUE)
+        R.utils::setOption("P.graphWMF", TRUE)
         PAMPA::barplot_pampa.f(
           agregation = params$aggregation,
           metrique = params$metric,
@@ -393,7 +394,7 @@ mod_barplot_server <- function(id, load_file){
           tableMetrique = params$metric_table,
           new_window = TRUE, dataEnv = .GlobalEnv, baseEnv = .GlobalEnv
         )
-        setOption("P.graphWMF", FALSE)
+        R.utils::setOption("P.graphWMF", FALSE)
       }
       shiny::removeModal()
     })

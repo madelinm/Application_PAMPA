@@ -18,6 +18,7 @@ mod_barplot_options_ui <- function(id){
 #'
 #' @import shiny
 #' @importFrom colourpicker colourInput updateColourInput
+#' @importFrom R.utils setOption
 mod_barplot_options_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -61,21 +62,21 @@ mod_barplot_options_server <- function(id){
     })
 
     shiny::observeEvent(input$barplot_options_ok, {
-      setOption("P.NbObs", input$barplot_options_nb_obs)
-      setOption("P.NbObsCol", input$barplot_options_nb_obs_col)
-      setOption("P.warnings", input$barplot_options_warnings)
-      setOption("P.barplotStat", input$barplot_options_statistics)
-      setOption("P.barplotErrorBar", input$barplot_options_error_bar)
+      R.utils::setOption("P.NbObs", input$barplot_options_nb_obs)
+      R.utils::setOption("P.NbObsCol", input$barplot_options_nb_obs_col)
+      R.utils::setOption("P.warnings", input$barplot_options_warnings)
+      R.utils::setOption("P.barplotStat", input$barplot_options_statistics)
+      R.utils::setOption("P.barplotErrorBar", input$barplot_options_error_bar)
 
       shiny::removeModal()
     })
 
     shiny::observeEvent(input$barplot_options_reset, {
-      setOption("P.NbObs", barplot_optn$nb_obs)
-      setOption("P.NbObsCol", barplot_optn$nb_obs_col)
-      setOption("P.warnings", barplot_optn$warnings)
-      setOption("P.barplotStat", barplot_optn$statistics)
-      setOption("P.barplotErrorBar", barplot_optn$error_bar)
+      R.utils::setOption("P.NbObs", barplot_optn$nb_obs)
+      R.utils::setOption("P.NbObsCol", barplot_optn$nb_obs_col)
+      R.utils::setOption("P.warnings", barplot_optn$warnings)
+      R.utils::setOption("P.barplotStat", barplot_optn$statistics)
+      R.utils::setOption("P.barplotErrorBar", barplot_optn$error_bar)
 
       shiny::updateCheckboxInput(inputId = "barplot_options_nb_obs", value = barplot_optn$nb_obs)
       colourpicker::updateColourInput(session = session, inputId = "barplot_options_nb_obs_col", value = barplot_optn$nb_obs_col)
