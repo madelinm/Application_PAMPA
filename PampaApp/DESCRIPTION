@@ -12,6 +12,7 @@ Imports:
     colourpicker,
     fs,
     leaflet,
+    R.utils,
     shinyFiles,
     shinyjs,
     shinyWidgets,
